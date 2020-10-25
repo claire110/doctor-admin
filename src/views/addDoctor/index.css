@@ -1,0 +1,12 @@
+.addDoctorForm{
+    display: flex;
+    width: 400px;
+    /* screen height */
+    height: 100vh;
+    /* center */
+    margin: auto;
+    background-color:white;
+    /* center vertical */
+    align-items: center;
+    padding-left: 5%;
+}

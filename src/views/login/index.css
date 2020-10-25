@@ -1,0 +1,28 @@
+body{
+    background-color:rgb(129, 129, 221) !important;
+}
+
+.loginForm{
+    display: flex;
+    width: 300px;
+    /* screen height */
+    height: 100vh;
+    /* center */
+    margin: auto;
+    background-color:white;
+    /* center vertical */
+    align-items: center;
+    padding-left: 5%;
+}
+
+/* .loginHeader{
+    height: 56px;
+    line-height: 56px;
+    color: black;
+
+} */
+
+.loginText{
+    /* font-size: 16px; */
+    /* opacity: .3; */
+}

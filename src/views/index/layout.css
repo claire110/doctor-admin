@@ -1,0 +1,21 @@
+.layout{
+    height: 100vh;
+}
+
+.header{
+    position: relative;
+    z-index: 2;
+    height: 75px;
+    background-color: white;
+    /* -webkit-box-shadow: 0, 3px, 16px, 0 rgba(0,0,0,.1);
+    -moz-box-shadow: 0, 3px, 16px, 0 rgba(0,0,0,.1);
+    -ms-box-shadow: 0, 3px, 16px, 0 rgba(0,0,0,.1);
+    -o-box-shadow: 0, 3px, 16px, 0 rgba(0,0,0,.1); */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.content{
+    border: 20px solid rgb(226, 223, 223);
+    background-color: rgb(255, 255, 255);
+    padding: 30px;
+}
