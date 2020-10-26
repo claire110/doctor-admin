@@ -237,28 +237,28 @@ $doctordb = new doctorModel; //instantiate database to start using
                 break;
 
             case 'logout':
-                // if($_SESSION['sessionOBJ']->logged_in()) {
+                if($_SESSION['sessionOBJ']->logged_in()) {
                     $result = $_SESSION['sessionOBJ']->logout_se();
                         if($result == true) {
                             http_response_code(200); //success
                         }else{
                             http_response_code(501);  // Not implemented 
                         }
-                    // }
-                    // else{
-                    //     http_response_code(401); // not login
-                    // } 
-                // // logging
-                //     $userid = $_SESSION['sessionOBJ']->getuserid();
-                //     $ip = $_SESSION['sessionOBJ']->getIP();
-                //     $browser = $_SESSION['sessionOBJ']->getBrowser();
-                //     $action = $_GET['action'];
-                //     $result = $doctordb->logging($userid, $action, $ip, $browser);
-                //         if($result == true) {
-                //            return true; // insert failed
-                //         } else{
-                //            return false; //insert logging success
-                //         }
+                    }
+                else{
+                    http_response_code(401); // not login
+                } 
+                // logging
+                    $userid = $_SESSION['sessionOBJ']->getuserid();
+                    $ip = $_SESSION['sessionOBJ']->getIP();
+                    $browser = $_SESSION['sessionOBJ']->getBrowser();
+                    $action = $_GET['action'];
+                    $result = $doctordb->logging($userid, $action, $ip, $browser);
+                        if($result == true) {
+                           return true; // insert failed
+                        } else{
+                           return false; //insert logging success
+                        }
                 break;
               
             case 'searchDoctorInfo':
@@ -579,7 +579,7 @@ $doctordb = new doctorModel; //instantiate database to start using
 
             
                 case 'doctorRegister'://todo, privilege and validation check before insert
-                // if($_SESSION['sessionOBJ']->logged_in()) {
+                if($_SESSION['sessionOBJ']->logged_in()) {
                     if(!empty($_POST['dfirstname']) && !empty($_POST["dlastname"]) && !empty($_POST['ddateofbirth']) && !empty($_POST['demail']) && !empty($_POST['dcontactnumber']) && !empty($_POST['dpicurl']) && !empty($_POST['dintro']) && !empty($_POST['dmedicalcenter']) && !empty($_POST['dareaofspec'])){
                         //input sanitation
                         $dfirstname = !empty($_POST['dfirstname'])? testInput(($_POST['dfirstname'])): null;
@@ -603,38 +603,38 @@ $doctordb = new doctorModel; //instantiate database to start using
                         $safe_dmedicalcenter = validate_data($dmedicalcenter, 'address');
                         $safe_dareaofspec = validate_data($dareaofspec, 'address');
 
-                        if($safe_dfirstname == true && $safe_dlastname == true && $safe_ddateofbirth == true && $safe_demail == true && $safe_dcontactnumber == true && $safe_dintro == true && $safe_dmedicalcenter == true && $safe_dareaofspec == true) { 
+                        // if($safe_dfirstname == true && $safe_dlastname == true && $safe_ddateofbirth == true && $safe_demail == true && $safe_dcontactnumber == true && $safe_dintro == true && $safe_dmedicalcenter == true && $safe_dareaofspec == true) { 
                             $result = $doctordb->addDoctor($dfirstname, $dlastname, $ddateofbirth, $demail, $dcontactnumber, $dpicurl, $dintro, $dmedicalcenter, $dareaofspec);
                             if($result == true) {
                                 http_response_code(201);//success
                             } else {
                                 http_response_code(501);//not implement
                             }
-                        }else{
-                            http_response_code(400);//Invalid input
-                        }
+                        // }else{
+                        //     http_response_code(400);//Invalid input
+                        // }
                     }else{
                         http_response_code(501);//not implement
                     }
-                // }else {
-                //     http_response_code(401);//unauthorized
-                // }
+                }else {
+                    http_response_code(401);//unauthorized
+                }
 
                 // logging
-                // $userid = $_SESSION['sessionOBJ']->getuserid();
-                // $ip = $_SESSION['sessionOBJ']->getIP();
-                // $browser = $_SESSION['sessionOBJ']->getBrowser();
-                // $action = $_GET['action'];
-                // $result = $doctordb->logging($userid, $action, $ip, $browser);
-                //     if($result == true) {
-                //        return true; // insert failed
-                //     } else{
-                //        return false; //insert logging success
-                //     }
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                    } else{
+                       return false; //insert logging success
+                    }
             break;
 
             case 'apptPlan':
-                // if($_SESSION['sessionOBJ']->logged_in()) {
+                if($_SESSION['sessionOBJ']->logged_in()) {
                     if(!empty($_POST['doctorid']) &&!empty($_POST['plandate']) && !empty($_POST["starttime"]) && !empty($_POST['endtime'])){
                         // //input sanitation
                         $doctorid = !empty($_POST['doctorid'])? testInput(($_POST['doctorid'])): null;
@@ -662,21 +662,21 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }else{
                         http_response_code(501);//not implement
                     }
-                // }else {
-                //     http_response_code(401);//unauthorized
-                // }
+                }else {
+                    http_response_code(401);//unauthorized
+                }
 
                 // logging
-                // $userid = $_SESSION['sessionOBJ']->getuserid();
-                // $ip = $_SESSION['sessionOBJ']->getIP();
-                // $browser = $_SESSION['sessionOBJ']->getBrowser();
-                // $action = $_GET['action'];
-                // $result = $doctordb->logging($userid, $action, $ip, $browser);
-                //     if($result == true) {
-                //        return true; // insert failed
-                //     } else{
-                //        return false; //insert logging success
-                //     }
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                    } else{
+                       return false; //insert logging success
+                    }
             break;
 
             case 'readDoctorName':
@@ -687,10 +687,22 @@ $doctordb = new doctorModel; //instantiate database to start using
                     http_response_code(200); //success
                     echo json_encode($result);
                 } 
+
+                // // logging
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                    } else{
+                       return false; //insert logging success
+                    }
             break;
 
             case 'delDoctor':
-                // if($_SESSION['sessionOBJ']->logged_in()) {
+                if($_SESSION['sessionOBJ']->logged_in()) {
                     $method = $_SERVER['REQUEST_METHOD'];
                     if('DELETE' === $method) {
                         if(!empty($_GET['doctorid'])){
@@ -706,70 +718,22 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }else{
                         http_response_code(501);//not implement
                     } 
-                // }else {
-                //     http_response_code(401);//unauthorized
-                // }
-                // // logging
-                // $userid = $_SESSION['sessionOBJ']->getuserid();
-                // $ip = $_SESSION['sessionOBJ']->getIP();
-                // $browser = $_SESSION['sessionOBJ']->getBrowser();
-                // $action = $_GET['action'];
-                // $result = $doctordb->logging($userid, $action, $ip, $browser);
-                //     if($result == true) {
-                //        return true; // insert failed
-                //     } else{
-                //        return false; //insert logging success
-                //     }
-                break;
-
-
-                case 'apptPlan':
-                    // if($_SESSION['sessionOBJ']->logged_in()) {
-                        if(!empty($_POST['doctorid']) &&!empty($_POST['plandate']) && !empty($_POST["starttime"]) && !empty($_POST['endtime'])){
-                            // //input sanitation
-                            $doctorid = !empty($_POST['doctorid'])? testInput(($_POST['doctorid'])): null;
-                            $plandate = !empty($_POST['plandate'])? testInput(($_POST['plandate'])): null;
-                            $starttime = !empty($_POST['starttime'])? testInput(($_POST['starttime'])): null;
-                            $endtime = !empty($_POST['endtime'])? testInput(($_POST['endtime'])): null;
-                           
-                            // //input validation
-                            // $safe_dfirstname = validate_data($dfirstname, 'firstname');
-                            // $safe_dlastname = validate_data($dlastname, 'lastname');
-                            // $safe_plandate= validate_data($plandate, 'plandate');
-                            // $safe_starttime = validate_data($starttime, 'starttime');
-                            // $safe_endtime = validate_data($endtime, 'endtime');
-    
-                            // if($safe_dfirstname == true && $safe_dlastname == true && $safe_planDate && $safe_startTime && $safe_endTime) { 
-                                $result = $doctordb->PlanAppt($doctorid, $plandate, $starttime, $endtime);
-                                if($result == true) {
-                                    http_response_code(201);//success
-                                } else {
-                                    http_response_code(501);//not implement
-                                }
-                            // }else{
-                            //     http_response_code(400);//Invalid input
-                            // }
-                        }else{
-                            http_response_code(501);//not implement
-                        }
-                    // }else {
-                    //     http_response_code(401);//unauthorized
-                    // }
-    
-                    // logging
-                    // $userid = $_SESSION['sessionOBJ']->getuserid();
-                    // $ip = $_SESSION['sessionOBJ']->getIP();
-                    // $browser = $_SESSION['sessionOBJ']->getBrowser();
-                    // $action = $_GET['action'];
-                    // $result = $doctordb->logging($userid, $action, $ip, $browser);
-                    //     if($result == true) {
-                    //        return true; // insert failed
-                    //     } else{
-                    //        return false; //insert logging success
-                    //     }
+                }else {
+                    http_response_code(401);//unauthorized
+                }
+                // logging
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                    } else{
+                       return false; //insert logging success
+                    }
                 break;
     
-
             default:
                 http_response_code(501);//not implement
                 throw new APIException("incorrect request");

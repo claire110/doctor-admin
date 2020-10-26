@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from "axios";
 // ANTD
-import { Form, Input, Button, DatePicker, Upload} from 'antd';
+import { Form, Input, Button, DatePicker, Upload, message} from 'antd';
 
 import { UserOutlined, UploadOutlined, HeartOutlined, MailOutlined, PhoneOutlined,
     ProfileOutlined, StarOutlined, ScheduleOutlined} from '@ant-design/icons';
@@ -53,6 +53,7 @@ class AddDoctor extends Component{
         userObject.append('dareaofspec', this.state.dareaofspec);
     
         axios.post(`http://localhost:80/reacttest/src/api/api?action=doctorRegister`,userObject, {
+            withCredentials:true,
             headers: { 
                 'Content-Type': 'multipart/form-data'
             }
@@ -61,9 +62,11 @@ class AddDoctor extends Component{
                 this.setState({
                     loading: false
                 })
-                console.log(res);
-                console.log(res.data);
-            }).catch((error) => {
+                // console.log(res);
+                // console.log(res.data);
+                message.info("Added Successfully");
+            })
+            .catch((error) => {
                 this.setState({
                     loading: false
                 })

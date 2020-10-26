@@ -34,7 +34,8 @@ class Login extends Component{
         userObject.append('password', this.state.password);
         // userObject.append('password', Cryptojs.MD5(this.state.password).toString());
       
-        axios.post(`http://localhost:80/reacttest/src/api/api?action=login`,userObject, {
+        axios.post(`http://localhost:80/doctor-admin/src/api/api?action=login`,userObject, {
+          withCredentials:true,
           headers: { 
              'Content-Type': 'multipart/form-data'
           }

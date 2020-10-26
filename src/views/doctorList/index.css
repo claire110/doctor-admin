@@ -1,0 +1,8 @@
+.delDoctorButton, .planButton{
+    margin-left: 10px;
+}
+
+.addDoctorButton{
+    margin-left: 87%;
+    margin-bottom: 2em;
+}

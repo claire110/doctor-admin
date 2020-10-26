@@ -38,10 +38,11 @@ class AddDoctor extends Component{
         userObject.append('starttime', this.state.starttime);
         userObject.append('endtime', this.state.endtime);
       
-        axios.post(`http://localhost:80/reacttest/src/api/api?action=apptPlan`,userObject, {
-          headers: { 
-             'Content-Type': 'multipart/form-data'
-          }
+        axios.post(`http://localhost:80/doctor-admin/src/api/api?action=apptPlan`,userObject, {
+            withCredentials:true,
+            headers: { 
+                'Content-Type': 'multipart/form-data'
+            }
         })
           .then(res => {
             this.setState({
@@ -83,6 +84,7 @@ class AddDoctor extends Component{
                 <div className="addDoctorContent">
                 <h2 className="addDoctorText">Appointment Plan</h2>
                     <Form
+                        layout="vertical"
                         name="basic"
                         initialValues={{ remember: true }}
                         onFinish={this.onFinish}
@@ -138,9 +140,6 @@ class AddDoctor extends Component{
                             </Button>
                         </Form.Item>
                     </Form>
-
-
-
                 </div>
             </div>
 

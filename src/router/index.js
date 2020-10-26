@@ -23,6 +23,11 @@ const router = [
         title: "Appointment Plan",
         icon: "bars",
         key: "/index/plan"  
+    },
+    {
+        title: "Logout",
+        icon: "bars",
+        key: "/index/logout"  
     }
 ]
 

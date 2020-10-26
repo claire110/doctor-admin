@@ -20,7 +20,7 @@ class AsideMenu extends Component {
 // Menu
 renderMenu = ({title,key}) => {
    return(
-        <Menu.Item key={key}>
+        <Menu.Item key={key} icon={<UserOutlined />}>
             <Link to={key}><span>{title}</span></Link>
         </Menu.Item>
    ) 

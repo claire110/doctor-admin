@@ -1,2 +1,4 @@
 npm install react-router-dom
-l
+
+1.	logout/add doctor/ del doctor cannot logging
+2.	Doctor list  rowkey.  https://ant.design/components/table-cn/#API
