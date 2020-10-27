@@ -2,3 +2,4 @@ npm install react-router-dom
 
 1.	logout/add doctor/ del doctor cannot logging
 2.	Doctor list  rowkey.  https://ant.design/components/table-cn/#API
+3. 箭头函数和普通函数区别

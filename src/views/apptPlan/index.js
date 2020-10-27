@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from "axios";
 // ANTD
-import { Form, Input, Button, DatePicker, TimePicker} from 'antd';
+import { Form, Input, Button, message, DatePicker, TimePicker} from 'antd';
 
 import { UserOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css'
@@ -9,10 +9,10 @@ import 'antd/dist/antd.css'
 import "./index.css";
 
 class AddDoctor extends Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
-            doctorid: '',
+            // doctorid: '',
             plandate: '',
             starttime: '',
             endtime: '',
@@ -20,6 +20,11 @@ class AddDoctor extends Component{
         };
         this.handleChange = this.handleChange.bind(this);
     }
+
+    // test get doctorID
+    // componentDidMount(){
+    //     console.log(this.props.location.state.doctorid)
+    // }
     
     handleChange (evt, field) {
         // check it out: we get the evt.target.name (which will be either "email" or "password")
@@ -33,7 +38,7 @@ class AddDoctor extends Component{
             loading: true
         })
 
-        userObject.append('doctorid', this.state.doctorid);
+        userObject.append('doctorid', this.props.location.state.doctorid);
         userObject.append('plandate', this.state.plandate);
         userObject.append('starttime', this.state.starttime);
         userObject.append('endtime', this.state.endtime);
@@ -48,6 +53,7 @@ class AddDoctor extends Component{
             this.setState({
                 loading: false
             })  
+            message.info("Added Successfully");
             console.log(res);
             console.log(res.data);
           }).catch((error) => {
@@ -56,7 +62,7 @@ class AddDoctor extends Component{
             })  
             console.log(error)
         });
-        this.setState({ doctorid: '', plandate: '', starttime: '', endtime:''})
+        this.setState({ plandate: '', starttime: '', endtime:''})
 
         console.log('Success:', event);
     };
@@ -80,25 +86,26 @@ class AddDoctor extends Component{
     render(){
         const {loading}  = this.state;
         return(
-            <div className="addDoctorForm">
-                <div className="addDoctorContent">
-                <h2 className="addDoctorText">Appointment Plan</h2>
+            <div className="apptPlanForm">
+                <div className="apptPlanContent">
+                <h2 className="apptPlanText">Appointment Plan</h2>
                     <Form
                         layout="vertical"
                         name="basic"
                         initialValues={{ remember: true }}
                         onFinish={this.onFinish}
                         onFinishFailed={this.onFinishFailed}
+                        size="large"
                         >
-                        <Form.Item
-                            name="doctorName"
+                        {/* <Form.Item
+                            name="doctorID"
                             rules={[{ required: true, message: 'Please input doctor name!' }]}
-                            label="doctor Name"
+                            label="Doctor ID"
                             onChange={(event)=>this.handleChange(event, "doctorid")} 
                         >
                             <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="First name" 
                                 onChange={(event)=>this.handleChange(event, "doctorid")} />
-                        </Form.Item>
+                        </Form.Item> */}
 
                         <Form.Item name="date-picker" 
                             // rules={[{ required: true, message: 'Please input the appointment date!' }]}

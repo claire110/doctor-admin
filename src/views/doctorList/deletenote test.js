@@ -1,6 +1,5 @@
 import React, { Component, Fragment} from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 // antd
 import {Form, Input, Button, Table, message, Modal} from "antd";
 // css
@@ -34,10 +33,17 @@ class DoctorList extends Component {
                             <div>
                                 
                                 <Button type="primary">Edit</Button>
-                                <Button className="delDoctorButton" onClick={()=>this.delDoctor(rowData.doctorID)} >Delete</Button>
-                                <Button className="planButton" type="primary">
-                                        <Link to={{pathname: "/index/plan", state:{doctorid: rowData.doctorID}}}>Plan</Link>
-                                </Button>
+                                {/* <Button className="delDoctorButton" onClick={()=>this.delDoctor(rowData.doctorID)} >Delete</Button> */}
+                                <Button className="delDoctorButton" onClick={()=>{this.setState({visible:true})}}>Delete</Button>
+                                <Button className="planButton" type="primary">Plan</Button>
+
+                                {/* <a className="apptPlan" style={{display: "table-cell"}} 
+                                href = "/index/plan" target = "_blank" rel = "noopener noreferrer">
+                                    <Button className="apptPlanButton" type="primary" htmlType="submit"
+                                            onClick={()=>this.apptPlan(rowData.doctorID)}>
+                                        appt Plan
+                                    </Button>
+                                </a> */}
                             </div>
                         )
                     } 
@@ -81,9 +87,15 @@ class DoctorList extends Component {
     }
 
     // delete doctor
-    delDoctor(doctorID){
+    delDoctor =(doctorID) =>{
+    // delDoctor(doctorID){
         console.log(doctorID)
         if(!doctorID){return false;}
+        this.setState({
+            visible: true,
+            doctorID
+        })
+
         axios.delete(`http://localhost:80/reacttest/src/api/api?action=delDoctor&doctorid=${doctorID}`,{withCredentials:true})
         .then(res => {
             // console.log(res);
@@ -98,15 +110,28 @@ class DoctorList extends Component {
       });
     }
 
+    // delete notifacation
+    modalThen =() =>{
+        const { delDoctor } = this.state;
+        delDoctor({doctorID:this.state.doctorID}).then(res =>{
+            message.info(res.data.message);
+            this.setState({
+                visible:false,
+                doctorID:""
+            })
+            this.loadData();
+        })
+    }
+
+
     render(){
         const { columns, data } = this.state;
         return(
             <Fragment>
                 
                 {/* security, noopener */}
-                {/* <a className="addDoctor" style={{display: "table-cell"}} 
-                   href = "/index/add" target = "_blank" rel = "noopener noreferrer"> */}
-                <a className="addDoctor" style={{display: "table-cell"}} href = "/index/add">
+                <a className="addDoctor" style={{display: "table-cell"}} 
+                   href = "/index/add" target = "_blank" rel = "noopener noreferrer">
                     <Button className="addDoctorButton" type="primary" htmlType="submit">
                         Add New Doctor
                     </Button>
@@ -114,6 +139,20 @@ class DoctorList extends Component {
 
                 <Table rowKey="doctorID" columns={columns} dataSource={data} bordered></Table>
 
+            {/* modal: cancel notification */}
+            <Modal
+                title="Notification"
+                visible={this.state.visible}
+                onOk={this.modalThen}
+                onCancel={()=>{this.setState({visible:false})}}
+                okText="Ok"
+                cancelText="Cancel"
+                >
+                <p>Do you Want to delete this item?</p>   
+            </Modal>
+           
+           
+           
             </Fragment>
         )
     }

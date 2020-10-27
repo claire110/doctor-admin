@@ -52,8 +52,9 @@ class Login extends Component{
             //router, redirect to admin page
             this.props.history.push("/index");
 
-            console.log(res);
-            console.log(res.data);
+            // console.log(res);
+            // console.log(res.data);
+            console.log(res.status);
             localStorage.setItem('login', 'Yes');
             localStorage.setItem('previlege', res.data); //test
             // localStorage.setItem('userid', res.data); //test

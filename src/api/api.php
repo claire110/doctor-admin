@@ -578,7 +578,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                 break;
 
             
-                case 'doctorRegister'://todo, privilege and validation check before insert
+            case 'doctorRegister'://todo, privilege and validation check before insert
                 if($_SESSION['sessionOBJ']->logged_in()) {
                     if(!empty($_POST['dfirstname']) && !empty($_POST["dlastname"]) && !empty($_POST['ddateofbirth']) && !empty($_POST['demail']) && !empty($_POST['dcontactnumber']) && !empty($_POST['dpicurl']) && !empty($_POST['dintro']) && !empty($_POST['dmedicalcenter']) && !empty($_POST['dareaofspec'])){
                         //input sanitation

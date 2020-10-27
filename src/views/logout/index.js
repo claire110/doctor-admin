@@ -5,14 +5,15 @@ import { Redirect } from "react-router-dom";
 // GET 
 export default class Logout extends React.Component {
 
-  handleSubmit = event => {
+  handleLogout = event => {
     event.preventDefault();
 
     axios.get(`http://localhost:80/doctor-admin/src/api/api?action=logout`,{withCredentials: true})
     
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        // console.log(res);
+        // console.log(res.data);
+        console.log(res.status);
         localStorage.removeItem('login');
         localStorage.setItem('previlege', res.data); //test
         // localStorage.setItem('userid', res.data);  //test
@@ -29,7 +30,7 @@ export default class Logout extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleLogout}>
           <label>
           </label>
           <button type="submit">LOGOUT</button>

@@ -103,6 +103,7 @@ class AddDoctor extends Component{
                         initialValues={{ remember: true }}
                         onFinish={this.onFinish}
                         onFinishFailed={this.onFinishFailed}
+                        size="large"
                         >
                         <Form.Item
                             name="firstName"

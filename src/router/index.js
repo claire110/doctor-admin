@@ -12,11 +12,6 @@ const router = [
                 title: "Add Doctor",
                 icon: ""
             },
-            {
-                key: "/index/delete",
-                title: "Delete Doctor",
-                icon: ""
-            },
         ]
     },
     {
