@@ -4,6 +4,8 @@ import {Switch, Route, Link} from 'react-router-dom';
 import Add from '../../views/addDoctor/index'
 import Plan from '../../views/apptPlan/index'
 import DoctorList from '../../views/doctorList/index'
+import availableAppt from '../../views/availableAppt/index'
+import ratingList from '../../views/ratingList/index'
 import DoctorDelete from '../../views/delDoctor/index'
 import Logout from '../../views/logout/index'
 // private component
@@ -24,6 +26,8 @@ class ContainerMain extends React.Component{
             <PrivateRouter component ={DoctorList} exact path="/index" />
             <PrivateRouter component ={Add} exact path="/index/add" />
             <PrivateRouter component ={Plan} exact path="/index/plan" />
+            <PrivateRouter component ={availableAppt} exact path="/index/available" />
+            <PrivateRouter component ={ratingList} exact path="/index/rating" />
             <PrivateRouter component ={DoctorDelete} exact path="/index/delete" />
             <PrivateRouter component ={Logout} exact path="/index/logout" />
           </Switch>

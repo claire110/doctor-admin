@@ -15,9 +15,14 @@ const router = [
         ]
     },
     {
-        title: "Appointment Plan",
+        title: "Available Times",
         icon: "bars",
-        key: "/index/plan"  
+        key: "/index/available"  
+    },
+    {
+        title: "Rating Management",
+        icon: "bars",
+        key: "/index/rating"  
     },
     {
         title: "Logout",

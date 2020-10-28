@@ -14,13 +14,19 @@ export default class DelDoctor extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    axios.delete(`http://localhost:80/reacttest/src/api/api?action=delDoctor&doctorid=${this.state.id}`,{withCredentials:true})
-      .then(res => {
-        console.log(res);
-        console.log(res.data);
-      }).catch((error) => {
-        console.log(error)
-    });
+    // axios.delete(`http://localhost:80/doctor-admin/src/api/api.php?action=delDoctor&doctorid=${this.state.id}`,
+    // {
+    //   withCredentials:true,
+    //   // headers: { 
+    //   //     'Content-Type': 'multipart/form-data'
+    //   // }
+    // })
+    //   .then(res => {
+    //     console.log(res);
+    //     console.log(res.data);
+    //   }).catch((error) => {
+    //     console.log(error)
+    // });
   }
 
   render() {

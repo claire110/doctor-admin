@@ -1,5 +1,45 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Available Functions
+
+### Login and Logout：
+Post: Login
+http://localhost:80/doctor-admin/src/api/api?action=login
+
+Get: Logout
+http://localhost:80/doctor-admin/src/api/api?action=logout
+
+### Doctor Management：
+Get:show all doctors information
+http://localhost:80/doctor-admin/src/api/api?action=readDoctorName
+
+Delete: Delete doctors
+http://localhost:80/doctor-admin/src/api/api?action=delDoctor&doctorid=${doctorID}
+
+Post: Add new doctors
+http://localhost:80/doctor-admin/src/api/api?action=doctorRegister 
+
+### Plan Management：
+Get: show all availabel times
+http://localhost:80/doctor-admin/src/api/api?action=availableAppt
+
+Delete: Delete plan
+http://localhost:80/doctor-admin/src/api/api?action=delApptPlan&planid=${planID}
+
+Post: Make a new plan
+http://localhost:80/doctor-admin/src/api/api?action=apptPlan
+
+### Rating Management：
+Get: show all rating histories
+http://localhost:80/doctor-admin/src/api/api?action=allRatings
+
+Delete: Delete ratings
+http://localhost:80/doctor-admin/src/api/api?action=adminDelRating&ratingid=${ratingID}
+
+
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:

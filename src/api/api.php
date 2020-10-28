@@ -688,7 +688,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     echo json_encode($result);
                 } 
 
-                // // logging
+                //  logging
                 $userid = $_SESSION['sessionOBJ']->getuserid();
                 $ip = $_SESSION['sessionOBJ']->getIP();
                 $browser = $_SESSION['sessionOBJ']->getBrowser();
@@ -721,7 +721,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                 }else {
                     http_response_code(401);//unauthorized
                 }
-                // logging
+                // // logging
                 $userid = $_SESSION['sessionOBJ']->getuserid();
                 $ip = $_SESSION['sessionOBJ']->getIP();
                 $browser = $_SESSION['sessionOBJ']->getBrowser();
@@ -732,8 +732,118 @@ $doctordb = new doctorModel; //instantiate database to start using
                     } else{
                        return false; //insert logging success
                     }
-                break;
+            break;
     
+            case 'availableAppt':
+                $result = $doctordb->availableAppt_process();
+                if($result == false) {
+                    http_response_code(204); // no content
+                } elseif(is_array($result)) {
+                    http_response_code(200); //success
+                    echo json_encode($result);
+                } 
+
+                //  logging
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                    } else{
+                       return false; //insert logging success
+                    }
+            break;
+
+            case 'delApptPlan':
+                if($_SESSION['sessionOBJ']->logged_in()) {
+                    $method = $_SERVER['REQUEST_METHOD'];
+                    if('DELETE' === $method) {
+                        if(!empty($_GET['planid'])){
+                                $result = $doctordb->delApptPlan_process($_GET['planid']);
+                                if($result == true) {
+                                    http_response_code(200); //deleted success
+                                }else{
+                                    http_response_code(501); //not implement
+                                }
+                        }else{
+                            http_response_code(400);//input invalidate
+                        } 
+                    }else{
+                        http_response_code(501);//not implement
+                    } 
+                }else {
+                    http_response_code(401);//unauthorized
+                }
+                // // logging
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                    } else{
+                       return false; //insert logging success
+                    }
+            break;
+
+            case 'allRatings':
+                $result = $doctordb->allRatings_process();
+                if($result == false) {
+                    http_response_code(204); // no content
+                } elseif(is_array($result)) {
+                    http_response_code(200); //success
+                    echo json_encode($result);
+                } 
+
+                //  logging
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                    } else{
+                       return false; //insert logging success
+                    }
+            break;
+
+            case 'adminDelRating':
+                if($_SESSION['sessionOBJ']->logged_in()) {
+                    $method = $_SERVER['REQUEST_METHOD'];
+                    if('DELETE' === $method) {
+                        if(!empty($_GET['ratingid'])){
+                                $result = $doctordb->adminDelRating_process($_GET['ratingid']);
+                                if($result == true) {
+                                    http_response_code(200); //deleted success
+                                }else{
+                                    http_response_code(501); //not implement
+                                }
+                        }else{
+                            http_response_code(400);//input invalidate
+                        } 
+                    }else{
+                        http_response_code(501);//not implement
+                    } 
+                }else {
+                    http_response_code(401);//unauthorized
+                }
+                // // logging
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                    } else{
+                       return false; //insert logging success
+                    }
+            break;
+
             default:
                 http_response_code(501);//not implement
                 throw new APIException("incorrect request");

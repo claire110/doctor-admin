@@ -8,7 +8,7 @@ import "./index.css";
 
 
 
-class DoctorList extends Component {
+class availableAppt extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -24,20 +24,19 @@ class DoctorList extends Component {
 
             // table header
             columns:[
-                {title:"DoctorID", dataIndex:"doctorID", key:"doctorID", width:100},
+                {title:"PlanID", dataIndex:"planID", key:"planID"},
                 {title:"First Name", dataIndex:"firstName", key:"firstName"},
                 {title:"Last Name", dataIndex:"lastName", key:"lastName"},
                 {title:"Medical Center", dataIndex:"medicalCenter", key:"medicalCenter"},
+                {title:"Date", dataIndex:"planDate", key:"planDate"},
+                {title:"Start Time", dataIndex:"planTimeStart", key:"planTimeStart"},
+                {title:"End Time", dataIndex:"planTimeEnd", key:"planTimeEnd"},
                 {title:"Management", dataIndex:"management", key:"management", width:250,
                     render:(text, rowData) =>{
                         return(
                             <div>
-                                
                                 <Button type="primary">Edit</Button>
-                                <Button className="delDoctorButton" onClick={()=>this.delDoctor(rowData.doctorID)} >Delete</Button>
-                                <Button className="planButton" type="primary">
-                                        <Link to={{pathname: "/index/plan", state:{doctorid: rowData.doctorID}}} >Plan</Link>
-                                </Button>
+                                <Button className="apptListButton" onClick={()=>this.delApptPlan(rowData.planID)} >Delete</Button>
                             </div>
                         )
                     } 
@@ -55,22 +54,22 @@ class DoctorList extends Component {
         this.loadData();
     }
 
-    // get doctor list
+    // get availabel appt list
     loadData = () => {
-        const doctors = {
+        const available = {
             pageNumber: this.state.pageNumber,
             pageSize: this.state.pageSize,
         }
         
-        axios.get(`http://localhost:80/doctor-admin/src/api/api?action=readDoctorName`,
+        axios.get(`http://localhost:80/doctor-admin/src/api/api?action=availableAppt`,
         {withCredentials:true})
         .then(res => {
             console.log(res.data);
-            const doctors = res.data;
+            const available = res.data;
 
-            if(doctors){
+            if(available){
                 this.setState({ 
-                    data:doctors 
+                    data:available 
                 });
             }
            
@@ -80,11 +79,11 @@ class DoctorList extends Component {
         });
     }
 
-    // delete doctor
-    delDoctor(doctorID){
-        console.log(doctorID)
-        if(!doctorID){return false;}
-        axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=delDoctor&doctorid=${doctorID}`,{withCredentials:true})
+    // delete appt plan
+    delApptPlan(planID){
+        console.log(planID)
+        if(!planID){return false;}
+        axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=delApptPlan&planid=${planID}`,{withCredentials:true})
         .then(res => {
             // console.log(res);
             console.log(res.data);
@@ -106,17 +105,18 @@ class DoctorList extends Component {
                 {/* security, noopener */}
                 {/* <a className="addDoctor" style={{display: "table-cell"}} 
                    href = "/index/add" target = "_blank" rel = "noopener noreferrer"> */}
-                <a className="addDoctor" style={{display: "table-cell"}} href = "/index/add">
+
+                {/* <a className="addDoctor" style={{display: "table-cell"}} href = "/index/add">
                     <Button className="addDoctorButton" type="primary" htmlType="submit">
                         Add New Doctor
                     </Button>
-                </a>
+                </a> */}
 
-                <Table rowKey="doctorID" columns={columns} dataSource={data} bordered></Table>
+                <Table rowKey="planID" columns={columns} dataSource={data} bordered></Table>
 
             </Fragment>
         )
     }
 }
 
-export default DoctorList;
+export default availableAppt;

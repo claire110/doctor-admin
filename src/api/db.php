@@ -438,13 +438,37 @@
             }  
         }
 
+        // admin：availabel appt  list
+        public function availableAppt_process() {
+            try {
+                $appt_list = "SELECT doctor.firstName, doctor.lastName, doctor.medicalCenter,plan.planID,plan.planDate, plan.planTimeStart, plan.planTimeEnd FROM plan 
+                INNER JOIN doctor
+                on plan.doctorID = doctor.doctorID
+                WHERE planID NOT IN (SELECT planID FROM booking)
+                ORDER BY planID ASC";
+    
+                $stmt = $this->conn->prepare($appt_list);
+                $stmt->execute();
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if($result == false) {
+                    return false;
+                } else {
+                    return $result;
+                }
+            } catch(PDOException $e) {
+                echo "apptList error"; die();
+            }  
+        }
+
         //admin page: del doctor
         public function delDoctor_process($doctorid) {
             // global $conn;
             $deldoctor = "DELETE FROM doctor WHERE doctorID = :doctorid"; 
             $stmt = $this->conn->prepare($deldoctor);
             $stmt->bindParam(':doctorid', $doctorid, PDO::PARAM_INT);
-            if ($stmt->execute()) { 
+            $result = $stmt->execute();
+            
+            if ($result) { 
                 return true;
             } else {
                 return false; 
@@ -465,6 +489,60 @@
                 return true;
             } else {
                 return false;
+            }
+        }
+
+        //admin page: del appt plan
+        public function delApptPlan_process($planid) {
+            $delApptPlan = "DELETE FROM plan WHERE planID = :planid"; 
+            $stmt = $this->conn->prepare($delApptPlan);
+            $stmt->bindParam(':planid', $planid, PDO::PARAM_INT);
+            $result = $stmt->execute();
+            
+            if ($result) { 
+                return true;
+            } else {
+                return false; 
+            }
+        }
+
+        //admin page: show all ratings
+        public function allRatings_process() {
+            try {
+                $appt_list = "SELECT rating.ratingID, rating.scale, rating.content, rating.ratingTime, plan.planDate, plan.planTimeStart,doctor.firstName, doctor.lastName
+                FROM plan
+                INNER JOIN doctor
+                ON plan.doctorID = doctor.doctorID
+                INNER JOIN booking
+                ON plan.planID = booking.planID
+                INNER JOIN rating
+                on rating.bookingID = booking.bookingID
+                ORDER BY rating.ratingID";
+    
+                $stmt = $this->conn->prepare($appt_list);
+                $stmt->execute();
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                if($result == false) {
+                    return false;
+                } else {
+                    return $result;
+                }
+            } catch(PDOException $e) {
+                echo "apptList error"; die();
+            }  
+        }
+
+        //admin page: del ratings
+        public function adminDelRating_process($ratingid) {
+            $adminDelRating = "DELETE FROM rating WHERE ratingID = :ratingid"; 
+            $stmt = $this->conn->prepare($adminDelRating);
+            $stmt->bindParam(':ratingid', $ratingid, PDO::PARAM_INT);
+            $result = $stmt->execute();
+            
+            if ($result) { 
+                return true;
+            } else {
+                return false; 
             }
         }
     }

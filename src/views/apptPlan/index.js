@@ -54,8 +54,9 @@ class AddDoctor extends Component{
                 loading: false
             })  
             message.info("Added Successfully");
-            console.log(res);
-            console.log(res.data);
+            console.log(res.status);
+            // console.log(res);
+            // console.log(res.data);
           }).catch((error) => {
             this.setState({
                 loading: false

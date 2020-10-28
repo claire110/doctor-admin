@@ -52,7 +52,8 @@ class AddDoctor extends Component{
         userObject.append('dmedicalcenter', this.state.dmedicalcenter);
         userObject.append('dareaofspec', this.state.dareaofspec);
     
-        axios.post(`http://localhost:80/reacttest/src/api/api?action=doctorRegister`,userObject, {
+        axios.post(`http://localhost:80/doctor-admin/src/api/api?action=doctorRegister`,
+        userObject, {
             withCredentials:true,
             headers: { 
                 'Content-Type': 'multipart/form-data'
@@ -64,6 +65,7 @@ class AddDoctor extends Component{
                 })
                 // console.log(res);
                 // console.log(res.data);
+                console.log(res.status);
                 message.info("Added Successfully");
             })
             .catch((error) => {
