@@ -8,11 +8,10 @@ import 'antd/dist/antd.css'
 // CSS
 import "./index.css";
 
-class AddDoctor extends Component{
+class apptPlan extends Component{
     constructor(props){
         super(props);
         this.state = {
-            // doctorid: '',
             plandate: '',
             starttime: '',
             endtime: '',
@@ -21,10 +20,6 @@ class AddDoctor extends Component{
         this.handleChange = this.handleChange.bind(this);
     }
 
-    // test get doctorID
-    // componentDidMount(){
-    //     console.log(this.props.location.state.doctorid)
-    // }
     
     handleChange (evt, field) {
         // check it out: we get the evt.target.name (which will be either "email" or "password")
@@ -49,7 +44,7 @@ class AddDoctor extends Component{
                 'Content-Type': 'multipart/form-data'
             }
         })
-          .then(res => {
+        .then(res => {
             this.setState({
                 loading: false
             })  
@@ -57,11 +52,24 @@ class AddDoctor extends Component{
             console.log(res.status);
             // console.log(res);
             // console.log(res.data);
-          }).catch((error) => {
+        })
+        .catch((error) => {
             this.setState({
                 loading: false
             })  
             console.log(error)
+
+            if (error.response.status === 401) {
+                message.info("Please login firstly.");
+            }
+
+            if (error.response.status === 400) {
+                message.info("Please make sure the input is valid.");
+            }
+
+            if (error.response.status === 501) {
+                message.info("Not implenment, input is empty.");
+            }
         });
         this.setState({ plandate: '', starttime: '', endtime:''})
 
@@ -71,10 +79,6 @@ class AddDoctor extends Component{
     onFinishFailed = errorInfo => {
         console.log('Failed:', errorInfo);
     };
-
-    // config = {
-    //     rules: [{ type: 'object', required: true, message: 'Please select time!' }],
-    //   };
 
     normFile = e => {
     console.log('Upload event:', e);
@@ -155,4 +159,4 @@ class AddDoctor extends Component{
     }
 }
 
-export default AddDoctor;
+export default apptPlan;

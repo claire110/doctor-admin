@@ -71,15 +71,22 @@ class DoctorList extends Component {
                 this.setState({ 
                     data:allRatings 
                 });
-            }
-           
-        }).catch((error) => {
-            // message.error('error message info' + error.message)
+            } 
+        })
+        .catch((error) => {
             console.log(error)
+
+            if (error.response.status === 204) {
+                message.info("Sorry, there are not any doctors' information.");
+            }
+
+            if (error.response.status === 401) {
+                message.info("Please login firstly.");
+            }
         });
     }
 
-    // delete doctor
+    // delete rating
     delRating(ratingID){
         console.log(ratingID)
         if(!ratingID){return false;}
@@ -92,8 +99,21 @@ class DoctorList extends Component {
             //refresh page, load data again
             this.loadData();
             
-        }).catch((error) => {
+        })
+        .catch((error) => {
             console.log(error)
+
+            if (error.response.status === 401) {
+                message.info("Please login firstly.");
+            }
+
+            if (error.response.status === 501) {
+                message.info("The rating does not exist.");
+            }
+
+            if (error.response.status === 400) {
+                message.info("Invalid, Please select the rating you want to delete.");
+            }
       });
     }
 
@@ -101,9 +121,7 @@ class DoctorList extends Component {
         const { columns, data } = this.state;
         return(
             <Fragment>
-            
                 <Table rowKey="ratingID" columns={columns} dataSource={data} bordered></Table>
-
             </Fragment>
         )
     }

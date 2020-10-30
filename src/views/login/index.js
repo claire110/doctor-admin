@@ -4,7 +4,7 @@ import{withRouter} from 'react-router-dom';
 import axios from "axios";
 
 // ANTD
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css'
 // CSS
@@ -22,9 +22,10 @@ class Login extends Component{
             loading: false
         };
         this.handleChange = this.handleChange.bind(this);
+        this.onFinish = this.onFinish.bind(this);
     }
     
-    onFinish = (event) => {
+    onFinish (event){
         const userObject = new FormData();
         this.setState({
             loading: true
@@ -32,21 +33,18 @@ class Login extends Component{
     
         userObject.append('username', this.state.username);
         userObject.append('password', this.state.password);
-        // userObject.append('password', Cryptojs.MD5(this.state.password).toString());
       
         axios.post(`http://localhost:80/doctor-admin/src/api/api?action=login`,userObject, {
           withCredentials:true,
           headers: { 
              'Content-Type': 'multipart/form-data'
-          }
-        }).then(res => {
+          } 
+        })
+        .then(res => {
             this.setState({
                 loading: false
             })    
-            // set token todo server
-            // const data = res.data.data
-            // console.log(data);
-            // setToken(data.token);
+            // set token
             setToken(res.data);
             
             //router, redirect to admin page
@@ -57,17 +55,29 @@ class Login extends Component{
             console.log(res.status);
             localStorage.setItem('login', 'Yes');
             localStorage.setItem('previlege', res.data); //test
-            // localStorage.setItem('userid', res.data); //test
-    
-          }).catch((error) => {
+        })
+        .catch((error) => {
             this.setState({
                 loading: false
-            })    
+            })   
             console.log(error)
-        });
-        this.setState({ username: '', password: ''})
 
-        console.log('Success:', event);
+            if (error.response.status === 401) {
+                message.info("Password or username is incorrect");
+            }
+            if (error.response.status === 400) {
+                message.info("please input a valid data");
+            }
+            if (error.response.status === 501) {
+                message.info("Input can not be empty");
+            }
+            if (error.response.status === 429) {
+                message.info("rate limit exceeded");
+            }
+            
+            return error;
+        });
+        // console.log('Success:', event);
     };
     
     onFinishFailed = errorInfo => {
@@ -75,8 +85,6 @@ class Login extends Component{
     };
 
     handleChange (evt, field) {
-        // check it out: we get the evt.target.name (which will be either "email" or "password")
-        // and use it to target the key on our `state` object with the same name, using bracket syntax
         this.setState({ [field]: evt.target.value });
     }
     
@@ -92,37 +100,29 @@ class Login extends Component{
                         onFinish={this.onFinish}
                         onFinishFailed={this.onFinishFailed}
                         >
-                        {/* <form noValidate autoComplete="off" onSubmit={this.handleSubmit}> */}
-                        <Form.Item
-                            name="username"
-                            rules={[{ required: true, message: 'Please input your username!' },
-                            {pattern: validate_username, message:"Username is invalid, 3 characters at least." }
-                            //    ({ getFieldValue }) => ({
-                            //         validator(rule, value) {
-                            //           if (value.length < 3) {
-                            //             return Promise.reject("Username is invalid, 3 characters at least.");
-                            //           }else{
-                            //              return Promise.resolve();
-                            //           }
-                            //         },
-                            //     }),
-                        ]}
-                        >
-                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" onChange={(event)=>this.handleChange(event, "username")}/>
+                        <Form.Item name="username"
+                            rules={[{ 
+                                required: true, message: 'Please input your username!' },
+                                {pattern: validate_username, message:"Username is invalid, 3 characters at least." }
+                            ]}>
+                            <Input placeholder="Username" 
+                                prefix={<UserOutlined className="site-form-item-icon" />} 
+                                value={this.state.username}
+                                onChange={(event)=>this.handleChange(event, "username")}
+                            />
                         </Form.Item>
 
-                        <Form.Item
-                            name="password"
+                        <Form.Item name="password"
                             rules={[
-                                { required: true, message: 'Please input your password!' },
-                                // {pattern:/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/, message:"Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.." }
+                                {required: true, message: 'Please input your password!' },
                                 {pattern: validate_password, message:"Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.." }
-                            ]}
-                        >
-                            <Input.Password prefix={<LockOutlined className="site-form-item-icon"/>}
-                            type="password"
-                            placeholder="Password"
-                            onChange={(event)=>this.handleChange(event, "password")}/>
+                            ]}>
+                            <Input.Password  placeholder="Password"
+                                prefix={<LockOutlined className="site-form-item-icon"/>}
+                                type="password"
+                                value={this.state.username}
+                                onChange={(event)=>this.handleChange(event, "password")}
+                            />
                         </Form.Item>
 
                         <Form.Item name="remember" valuePropName="checked">
@@ -130,15 +130,15 @@ class Login extends Component{
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" loading={loading} htmlType="submit" className="loginFormButton" block>
-                            Login
+                            <Button type="primary" 
+                                loading={loading} 
+                                htmlType="submit" 
+                                className="loginFormButton" block> Login
                             </Button>
                         </Form.Item>
                     </Form>
-                    {/* </form> */}
                 </div>
             </div>
-
         ) 
     }
 }

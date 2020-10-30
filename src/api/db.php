@@ -441,7 +441,7 @@
         // admin：availabel appt  list
         public function availableAppt_process() {
             try {
-                $appt_list = "SELECT doctor.firstName, doctor.lastName, doctor.medicalCenter,plan.planID,plan.planDate, plan.planTimeStart, plan.planTimeEnd FROM plan 
+                $appt_list = "SELECT doctor.doctorID,doctor.firstName, doctor.lastName, doctor.medicalCenter,plan.planID,plan.planDate, plan.planTimeStart, plan.planTimeEnd FROM plan 
                 INNER JOIN doctor
                 on plan.doctorID = doctor.doctorID
                 WHERE planID NOT IN (SELECT planID FROM booking)
@@ -540,6 +540,40 @@
             $result = $stmt->execute();
             
             if ($result) { 
+                return true;
+            } else {
+                return false; 
+            }
+        }
+
+
+        //admin page: appt detail
+        public function apptDetail_process($planid) {
+            $apptDetail = "SELECT plan.planID, plan.planDate, plan.planID, plan.planTimeEnd, plan.planTimeStart, plan.doctorID, doctor.firstName, doctor.lastName
+                        FROM plan INNER JOIN doctor
+                        ON plan.doctorID = doctor.doctorID
+                        WHERE plan.planID = :planid"; 
+            $stmt = $this->conn->prepare($apptDetail);
+            $stmt->bindParam(':planid', $planid, PDO::PARAM_INT);
+            $result = $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if($result == false) {
+                return false;
+            } else {
+                return $result;
+            }
+        }
+
+        //admin page: appt edit
+          public function apptEdit_process($planid, $doctorid, $plandate, $starttime, $endtime) {
+            $apptEdit = "UPDATE plan SET doctorID = :doctorid, planDate = :plandate, planTimeStart = :starttime, planTimeEnd = :endtime WHERE planID = :planid";
+            $stmt = $this->conn->prepare($apptEdit);
+            $stmt->bindParam(':planid', $planid);
+            $stmt->bindParam(':doctorid', $doctorid);
+            $stmt->bindParam(':plandate', $plandate);
+            $stmt->bindParam(':starttime', $starttime);
+            $stmt->bindParam(':endtime', $endtime);
+            if ($stmt->execute()) { 
                 return true;
             } else {
                 return false; 

@@ -2,7 +2,7 @@ import React, { Component, Fragment} from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 // antd
-import {Form, Input, Button, Table, message, Modal} from "antd";
+import {Button, Table, message} from "antd";
 // css
 import "./index.css";
 
@@ -17,7 +17,6 @@ class DoctorList extends Component {
             pageSize: 10,
             keyWork:"",
 
-            
             // modal: cancel notification 
             visible:false,
             doctorID:"",
@@ -28,15 +27,13 @@ class DoctorList extends Component {
                 {title:"First Name", dataIndex:"firstName", key:"firstName"},
                 {title:"Last Name", dataIndex:"lastName", key:"lastName"},
                 {title:"Medical Center", dataIndex:"medicalCenter", key:"medicalCenter"},
-                {title:"Management", dataIndex:"management", key:"management", width:250,
+                {title:"Management", dataIndex:"management", key:"management", width:200,
                     render:(text, rowData) =>{
                         return(
                             <div>
-                                
-                                <Button type="primary">Edit</Button>
                                 <Button className="delDoctorButton" onClick={()=>this.delDoctor(rowData.doctorID)} >Delete</Button>
                                 <Button className="planButton" type="primary">
-                                        <Link to={{pathname: "/index/plan", state:{doctorid: rowData.doctorID}}} >Plan</Link>
+                                    <Link to={{pathname: "/index/plan", state:{doctorid: rowData.doctorID}}} >Plan</Link>
                                 </Button>
                             </div>
                         )
@@ -45,8 +42,7 @@ class DoctorList extends Component {
             ],
 
             // tabel data
-            data:[{},],
-           
+            data:[{},],   
         };
     }
 
@@ -62,8 +58,7 @@ class DoctorList extends Component {
             pageSize: this.state.pageSize,
         }
         
-        axios.get(`http://localhost:80/doctor-admin/src/api/api?action=readDoctorName`,
-        {withCredentials:true})
+        axios.get(`http://localhost:80/doctor-admin/src/api/api?action=readDoctorName`,{withCredentials:true})
         .then(res => {
             console.log(res.data);
             const doctors = res.data;
@@ -72,18 +67,29 @@ class DoctorList extends Component {
                 this.setState({ 
                     data:doctors 
                 });
-            }
-           
-        }).catch((error) => {
-            // message.error('error message info' + error.message)
+            }   
+        })
+        .catch((error) => {
             console.log(error)
+
+            if (error.response.status === 204) {
+                message.info("Sorry, there are not any doctors' information.");
+            }
+
+            if (error.response.status === 401) {
+                message.info("Please login firstly.");
+            }
         });
     }
 
     // delete doctor
     delDoctor(doctorID){
         console.log(doctorID)
-        if(!doctorID){return false;}
+        if(!doctorID){
+            message.info("The doctor's information does not exist");
+            return false;
+        }
+
         axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=delDoctor&doctorid=${doctorID}`,{withCredentials:true})
         .then(res => {
             // console.log(res);
@@ -91,10 +97,22 @@ class DoctorList extends Component {
             message.info("Successfully Deleted");
 
             //refresh page, load data again
-            this.loadData();
-            
-        }).catch((error) => {
+            this.loadData();  
+        })
+        .catch((error) => {
             console.log(error)
+
+            if (error.response.status === 401) {
+                message.info("Please login firstly.");
+            }
+
+            if (error.response.status === 501) {
+                message.info("The doctor's information does not exist.");
+            }
+
+            if (error.response.status === 400) {
+                message.info("Invalid, Please select the doctor you want to delete.");
+            }
       });
     }
 

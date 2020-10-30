@@ -680,13 +680,18 @@ $doctordb = new doctorModel; //instantiate database to start using
             break;
 
             case 'readDoctorName':
-                $result = $doctordb->readDoctorName();
-                if($result == false) {
-                    http_response_code(204); // no content
-                } elseif(is_array($result)) {
-                    http_response_code(200); //success
-                    echo json_encode($result);
-                } 
+                if($_SESSION['sessionOBJ']->logged_in()) {
+                    $result = $doctordb->readDoctorName();
+                    if($result == false) {
+                        http_response_code(204); // no content
+                    } elseif(is_array($result)) {
+                        http_response_code(200); //success
+                        echo json_encode($result);
+                    }
+                }else {
+                    http_response_code(401);//unauthorized
+                }
+ 
 
                 //  logging
                 $userid = $_SESSION['sessionOBJ']->getuserid();
@@ -735,13 +740,17 @@ $doctordb = new doctorModel; //instantiate database to start using
             break;
     
             case 'availableAppt':
-                $result = $doctordb->availableAppt_process();
-                if($result == false) {
-                    http_response_code(204); // no content
-                } elseif(is_array($result)) {
-                    http_response_code(200); //success
-                    echo json_encode($result);
-                } 
+                if($_SESSION['sessionOBJ']->logged_in()) {
+                    $result = $doctordb->availableAppt_process();
+                    if($result == false) {
+                        http_response_code(204); // no content
+                    } elseif(is_array($result)) {
+                        http_response_code(200); //success
+                        echo json_encode($result);
+                    } 
+                }else {
+                    http_response_code(401);//unauthorized
+                }
 
                 //  logging
                 $userid = $_SESSION['sessionOBJ']->getuserid();
@@ -790,13 +799,17 @@ $doctordb = new doctorModel; //instantiate database to start using
             break;
 
             case 'allRatings':
-                $result = $doctordb->allRatings_process();
-                if($result == false) {
-                    http_response_code(204); // no content
-                } elseif(is_array($result)) {
-                    http_response_code(200); //success
-                    echo json_encode($result);
-                } 
+                if($_SESSION['sessionOBJ']->logged_in()) {
+                    $result = $doctordb->allRatings_process();
+                    if($result == false) {
+                        http_response_code(204); // no content
+                    } elseif(is_array($result)) {
+                        http_response_code(200); //success
+                        echo json_encode($result);
+                    } 
+                }else {
+                    http_response_code(401);//unauthorized
+                }
 
                 //  logging
                 $userid = $_SESSION['sessionOBJ']->getuserid();
@@ -843,6 +856,77 @@ $doctordb = new doctorModel; //instantiate database to start using
                        return false; //insert logging success
                     }
             break;
+
+
+            // admin: get appt details
+            case 'apptDetail':
+                if($_SESSION['sessionOBJ']->logged_in()) {
+                    if(!empty($_GET['planid'])){
+                        $result = $doctordb->apptDetail_process($_GET['planid']);
+                        if($result == false) {
+                            http_response_code(204);//no content
+                        } elseif(is_array($result)) {
+                            http_response_code(200); //success
+                            echo json_encode($result);
+                        } 
+                    }else{
+                        http_response_code(400);//doctorid invalidate
+                    }
+                }else {
+                    http_response_code(401);//unauthorized
+                }
+
+                //  logging
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                       echo json_encode($result);
+                    } else{
+                       return false; //insert logging success
+                    }
+            break;
+
+            //admin:edit appt time
+            case 'apptEdit':
+                if($_SESSION['sessionOBJ']->logged_in()) {
+                    if(!empty($_POST['doctorid']) &&!empty($_POST['plandate']) && !empty($_POST["starttime"]) && !empty($_POST['endtime'])){
+                        // //input sanitation
+                        $doctorid = !empty($_POST['doctorid'])? testInput(($_POST['doctorid'])): null;
+                        $plandate = !empty($_POST['plandate'])? testInput(($_POST['plandate'])): null;
+                        $starttime = !empty($_POST['starttime'])? testInput(($_POST['starttime'])): null;
+                        $endtime = !empty($_POST['endtime'])? testInput(($_POST['endtime'])): null;
+        
+                        //input validation
+                    
+                    // if($safe_dfirstname == true && $safe_dlastname == true && $safe_planDate && $safe_startTime && $safe_endTime) { 
+                        $result = $doctordb->apptEdit_process($_GET['planid'], $doctorid, $plandate, $starttime, $endtime);
+                        if($result == true) {
+                            http_response_code(201); //add success
+                        }else{
+                            http_response_code(501); //not implement
+                        }
+                    }else{
+                        http_response_code(400); //input invalidate
+                    }  
+                }else{
+                    http_response_code(401);//unauthorized
+                }
+                // logging
+                $userid = $_SESSION['sessionOBJ']->getuserid();
+                $ip = $_SESSION['sessionOBJ']->getIP();
+                $browser = $_SESSION['sessionOBJ']->getBrowser();
+                $action = $_GET['action'];
+                $result = $doctordb->logging($userid, $action, $ip, $browser);
+                    if($result == true) {
+                       return true; // insert failed
+                    } else{
+                       return false; //insert logging success
+                    }
+                break;  
 
             default:
                 http_response_code(501);//not implement

@@ -28,6 +28,11 @@ const router = [
         title: "Logout",
         icon: "bars",
         key: "/index/logout"  
+    },
+    {
+        title: "axios",
+        icon: "bars",
+        key: "/index/test"  
     }
 ]
 

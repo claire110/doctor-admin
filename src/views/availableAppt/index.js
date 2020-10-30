@@ -35,8 +35,11 @@ class availableAppt extends Component {
                     render:(text, rowData) =>{
                         return(
                             <div>
-                                <Button type="primary">Edit</Button>
-                                <Button className="apptListButton" onClick={()=>this.delApptPlan(rowData.planID)} >Delete</Button>
+                                <Button className="planButton" type="primary">
+                                    <Link to={{pathname: "/index/apptEdit", 
+                                        state:{planid: rowData.planID, doctorid: rowData.doctorID, plandate: rowData.planDate, starttime: rowData.planTimeStart, endtime: rowData.planTimeEnd, firstname: rowData.firstName, lastname: rowData.lastName}}} >Edit</Link>
+                                </Button>
+                                <Button className="delApptButton" onClick={()=>this.delApptPlan(rowData.planID)} >Delete</Button>
                             </div>
                         )
                     } 
@@ -66,16 +69,26 @@ class availableAppt extends Component {
         .then(res => {
             console.log(res.data);
             const available = res.data;
-
             if(available){
                 this.setState({ 
                     data:available 
                 });
             }
-           
-        }).catch((error) => {
-            // message.error('error message info' + error.message)
+        })
+        .catch((error) => {
             console.log(error)
+
+            if (error.response.status === 204) {
+                message.info("Sorry, there are not any doctors' information.");
+            }
+
+            if (error.response.status === 401) {
+                message.info("Please login firstly.");
+            }
+
+            if (error.response.status === 400) {
+                message.info("Invalid, The plan is not exist.");
+            }
         });
     }
 
@@ -92,8 +105,21 @@ class availableAppt extends Component {
             //refresh page, load data again
             this.loadData();
             
-        }).catch((error) => {
+        })
+        .catch((error) => {
             console.log(error)
+
+            if (error.response.status === 401) {
+                message.info("Please login firstly.");
+            }
+
+            if (error.response.status === 501) {
+                message.info("The plan does not exist.");
+            }
+
+            if (error.response.status === 400) {
+                message.info("Invalid, Please select the time you want to delete.");
+            }
       });
     }
 

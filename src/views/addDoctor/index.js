@@ -59,23 +59,35 @@ class AddDoctor extends Component{
                 'Content-Type': 'multipart/form-data'
             }
         })
-            .then(res => {
-                this.setState({
-                    loading: false
-                })
-                // console.log(res);
-                // console.log(res.data);
-                console.log(res.status);
-                message.info("Added Successfully");
+        .then(res => {
+            this.setState({
+                loading: false
             })
-            .catch((error) => {
-                this.setState({
-                    loading: false
-                })
-                console.log(error)
-            });
-        // this.setState({ doctorid: '', plandate: '', starttime: '', endtime:''})
-            console.log('Success:', event);
+            // console.log(res);
+            // console.log(res.data);
+            console.log(res.status);
+            message.info("Added Successfully");
+        })
+        .catch((error) => {
+            this.setState({
+                loading: false
+            })
+            console.log(error)
+
+            if (error.response.status === 401) {
+                message.info("Please login firstly.");
+            }
+
+            if (error.response.status === 400) {
+                message.info("Please make sure the input is valid.");
+            }
+
+            if (error.response.status === 501) {
+                message.info("Not implenment, input is empty.");
+            }
+        });
+        //this.setState({ dfirstname: '', dlastname: '', ddateofbirth: '', demail:'', dcontactnumber:'', dpicurl:'', dintro:'',  dmedicalcenter:'',  dareaofspec:''})
+        console.log('Success:', event);
     }
         
     onFinishFailed = errorInfo => {
