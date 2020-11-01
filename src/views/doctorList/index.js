@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import {Button, Table, message} from "antd";
 // css
 import "./index.css";
-
-
+// // api
+// import { getDoctorList, deleteDoctor } from "../../services/index";
 
 class DoctorList extends Component {
     constructor(props){
@@ -59,6 +59,7 @@ class DoctorList extends Component {
         }
         
         axios.get(`http://localhost:80/doctor-admin/src/api/api?action=readDoctorName`,{withCredentials:true})
+        // getDoctorList()
         .then(res => {
             console.log(res.data);
             const doctors = res.data;
@@ -90,6 +91,7 @@ class DoctorList extends Component {
             return false;
         }
 
+        // deleteDoctor()
         axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=delDoctor&doctorid=${doctorID}`,{withCredentials:true})
         .then(res => {
             // console.log(res);
@@ -138,5 +140,6 @@ class DoctorList extends Component {
         )
     }
 }
+
 
 export default DoctorList;
