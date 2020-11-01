@@ -46,7 +46,7 @@ renderSubMenu =({title, key, child}) => {
                     mode="inline"
                     defaultSelectedKeys={['1']}
                     defaultOpenKeys={['sub1']}
-                    style={{ height: '100%', borderRight: 0 }}
+                    style={{ height: '100%', borderRight: 0, backgroundColor:'#002766', color:"white" }}
                     >
                      {
                          Router && Router.map(firstItem =>{

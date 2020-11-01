@@ -18,7 +18,7 @@ class Index extends Component {
     render(){
         return(
             <Layout className="layout">
-                <Header className="header"><LayoutHeader/></Header>
+                <Header className="header" style={{ backgroundColor:'#002766'}}><LayoutHeader/></Header>
                 <Layout>
                     <Sider width="250px"><LayoutAside/></Sider>
                     <Content className="content">

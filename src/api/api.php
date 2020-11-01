@@ -96,7 +96,8 @@ $doctordb = new doctorModel; //instantiate database to start using
                 return false;
     
             case 'dateofbirth':   
-                if(preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/",$unsafe)){
+                // if(preg_match("/^((((19|[2-9]\d)\d{2})\-(0[13578]|1[02])\-(0[1-9]|[12]\d|3[01]))|(((19|[2-9]\d)\d{2})\-(0[13456789]|1[012])\-(0[1-9]|[12]\d|30))|(((19|[2-9]\d)\d{2})\-02\-(0[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))\-02\-29))$/g",$unsafe)){
+                   if(preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/",$unsafe)){
                     return true;
                 }
                 return false;
@@ -112,6 +113,12 @@ $doctordb = new doctorModel; //instantiate database to start using
                         return true;
                }
                  return false;
+
+            case 'phone':   
+            if(preg_match("/[0-9]{8,}/",$unsafe)){
+                    return true;
+            }
+                return false;
 
             case 'address':   
                 if(strlen($unsafe) > 1){
@@ -133,6 +140,12 @@ $doctordb = new doctorModel; //instantiate database to start using
     
             case 'searchValue':
                 if(strlen($unsafe) >= 1){
+                    return true;
+                }
+                return false;
+
+            case 'time':
+                if(preg_match("/^(20|21|22|23|[0-1]\d):[0-5]\d$/",$unsafe)){
                     return true;
                 }
                 return false;
@@ -597,24 +610,24 @@ $doctordb = new doctorModel; //instantiate database to start using
                         $safe_dlastname = validate_data($dlastname, 'lastname');
                         $safe_ddateofbirth = validate_data($ddateofbirth, 'dateofbirth');
                         $safe_demail = validate_data($demail, 'email');
-                        $safe_dcontactnumber = validate_data($dcontactnumber, 'contactnumber');
+                        $safe_dcontactnumber = validate_data($dcontactnumber, 'phone');
                         //$safe_dpicurl = validate_data($dpicurl, 'dpicurl');
                         $safe_dintro = validate_data($dintro, 'address');
                         $safe_dmedicalcenter = validate_data($dmedicalcenter, 'address');
                         $safe_dareaofspec = validate_data($dareaofspec, 'address');
 
-                        // if($safe_dfirstname == true && $safe_dlastname == true && $safe_ddateofbirth == true && $safe_demail == true && $safe_dcontactnumber == true && $safe_dintro == true && $safe_dmedicalcenter == true && $safe_dareaofspec == true) { 
+                        if($safe_dfirstname == true && $safe_dlastname == true && $safe_ddateofbirth == true && $safe_demail == true && $safe_dcontactnumber == true && $safe_dintro == true && $safe_dmedicalcenter == true && $safe_dareaofspec == true) { 
                             $result = $doctordb->addDoctor($dfirstname, $dlastname, $ddateofbirth, $demail, $dcontactnumber, $dpicurl, $dintro, $dmedicalcenter, $dareaofspec);
                             if($result == true) {
                                 http_response_code(201);//success
                             } else {
                                 http_response_code(501);//not implement
                             }
-                        // }else{
-                        //     http_response_code(400);//Invalid input
-                        // }
+                        }else{
+                            http_response_code(400);//Invalid input
+                        }
                     }else{
-                        http_response_code(501);//not implement
+                        http_response_code(400);//Invalid input
                     }
                 }else {
                     http_response_code(401);//unauthorized
@@ -642,25 +655,23 @@ $doctordb = new doctorModel; //instantiate database to start using
                         $starttime = !empty($_POST['starttime'])? testInput(($_POST['starttime'])): null;
                         $endtime = !empty($_POST['endtime'])? testInput(($_POST['endtime'])): null;
                        
-                        // //input validation
-                        // $safe_dfirstname = validate_data($dfirstname, 'firstname');
-                        // $safe_dlastname = validate_data($dlastname, 'lastname');
-                        // $safe_plandate= validate_data($plandate, 'plandate');
-                        // $safe_starttime = validate_data($starttime, 'starttime');
-                        // $safe_endtime = validate_data($endtime, 'endtime');
+                        //input validation
+                        $safe_plandate= validate_data($plandate, 'dateofbirth');
+                        $safe_starttime = validate_data($starttime, 'time');
+                        $safe_endtime = validate_data($endtime, 'time');
 
-                        // if($safe_dfirstname == true && $safe_dlastname == true && $safe_planDate && $safe_startTime && $safe_endTime) { 
+                        if($safe_plandate && $safe_starttime && $safe_endtime) { 
                             $result = $doctordb->PlanAppt($doctorid, $plandate, $starttime, $endtime);
                             if($result == true) {
                                 http_response_code(201);//success
                             } else {
                                 http_response_code(501);//not implement
                             }
-                        // }else{
-                        //     http_response_code(400);//Invalid input
-                        // }
+                        }else{
+                            http_response_code(400);//Invalid input
+                        }
                     }else{
-                        http_response_code(501);//not implement
+                        http_response_code(400);//not implement
                     }
                 }else {
                     http_response_code(401);//unauthorized
@@ -901,17 +912,23 @@ $doctordb = new doctorModel; //instantiate database to start using
                         $endtime = !empty($_POST['endtime'])? testInput(($_POST['endtime'])): null;
         
                         //input validation
+                        $safe_plandate= validate_data($plandate, 'dateofbirth');
+                        $safe_starttime = validate_data($starttime, 'time');
+                        $safe_endtime = validate_data($endtime, 'time');
                     
-                    // if($safe_dfirstname == true && $safe_dlastname == true && $safe_planDate && $safe_startTime && $safe_endTime) { 
-                        $result = $doctordb->apptEdit_process($_GET['planid'], $doctorid, $plandate, $starttime, $endtime);
-                        if($result == true) {
-                            http_response_code(201); //add success
+                        if($safe_plandate && $safe_starttime && $safe_endtime) { 
+                            $result = $doctordb->apptEdit_process($_GET['planid'], $doctorid, $plandate, $starttime, $endtime);
+                            if($result == true) {
+                                http_response_code(201); //add success
+                            }else{
+                                http_response_code(501); //not implement
+                            }
                         }else{
-                            http_response_code(501); //not implement
-                        }
+                            http_response_code(400); //input invalidate
+                        }  
                     }else{
                         http_response_code(400); //input invalidate
-                    }  
+                    } 
                 }else{
                     http_response_code(401);//unauthorized
                 }

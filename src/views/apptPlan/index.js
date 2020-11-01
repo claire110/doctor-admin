@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import axios from "axios";
 // ANTD
 import { Form, Input, Button, message, DatePicker, TimePicker} from 'antd';
-
 import { UserOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css'
+//VALIDATION
+import { validate_date, validate_stime,validate_etime } from "../../utils/validate";
 // CSS
 import "./index.css";
 
@@ -68,7 +69,7 @@ class apptPlan extends Component{
             }
 
             if (error.response.status === 501) {
-                message.info("Not implenment, input is empty.");
+                message.info("There are something wrong on the process, please try again..");
             }
         });
         this.setState({ plandate: '', starttime: '', endtime:''})
@@ -113,7 +114,10 @@ class apptPlan extends Component{
                         </Form.Item> */}
 
                         <Form.Item name="date-picker" 
-                            // rules={[{ required: true, message: 'Please input the appointment date!' }]}
+                            rules={[
+                                {required: true, message: 'Please input the appointment date!' },
+                                {pattern: validate_date, message:"Please enter a valid date. format: yyyy-mm-dd.."}
+                            ]}
                             label="Appointment date" {...this.config}>
                             {/* <DatePicker placeholder="Appointment date"
                             onChange={(event)=>this.handleChange(event, "plandate")} /> */}
@@ -123,8 +127,11 @@ class apptPlan extends Component{
 
                         <Form.Item 
                             // name="time-picker" 
-                            label="TimePicker" 
-                            // rules={[{ required: true, message: 'Please input start time!' }]}
+                            name="startTime" 
+                            rules={[
+                                {required: true, message: 'Please input start time!' },
+                                {pattern: validate_stime, message:"Please enter a valid time. format: HH:mm"}
+                            ]}
                             label="Start time" {...this.config}>
                             {/* <TimePicker  placeholder="Start Time"
                                 onChange={(event)=>this.handleChange(event, "starttime")} /> */}
@@ -135,8 +142,11 @@ class apptPlan extends Component{
 
                         <Form.Item 
                             // name="time-picker" 
-                            label="TimePicker" 
-                            rules={[{ required: true, message: 'Please input end time!' }]}
+                            name="endTime" 
+                            rules={[
+                                {required: true, message: 'Please input end time!' },
+                                {pattern: validate_etime, message:"Please enter a valid time. format: HH:mm"}
+                            ]}
                             label="End time" {...this.config}>
                             {/* <TimePicker  placeholder="End Time"
                                  onChange={(event)=>this.handleChange(event, "endtime")}

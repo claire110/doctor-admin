@@ -1,18 +1,22 @@
 body{
-    background-color:rgb(129, 129, 221) !important;
+    background-color:#722ed1 !important;
+}
+h1{
+    color: white !important;
+    text-shadow: 2px 2px 4px #000000 !important;
+    text-align: center;
+    margin-top: 2em;
+    font-size: 3em ;
 }
 
 .loginForm{
-    display: flex;
-    width: 300px;
-    /* screen height */
-    height: 100vh;
-    /* center */
-    margin: auto;
-    background-color:white;
-    /* center vertical */
-    align-items: center;
-    padding-left: 5%;
+width: 25%;
+margin-top: 5%;
+margin-left: 37.5%;
+background-color: whitesmoke;
+padding: 3em;
+border-radius: 10px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 /* .loginHeader{

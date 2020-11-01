@@ -1,3 +1,4 @@
+
 .logo{
     width: 250px;
     margin-left: -50px;
@@ -5,7 +6,8 @@
     height: 75px;
     align-items: center;
     justify-content: center;
-    background-color: rgb(14, 138, 117);
+    background-color:#002766;
+   
 }
 
 #logo{

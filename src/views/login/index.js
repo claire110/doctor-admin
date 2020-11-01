@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 // whitelist, redirect.
 import{withRouter} from 'react-router-dom';
 import axios from "axios";
@@ -91,54 +91,58 @@ class Login extends Component{
     render(){
         const {loading}  = this.state;
         return(
-            <div className="loginForm">
-                <div className="loginContent">
-                    <h4 className="loginText">Login</h4>
-                    <Form
-                        name="basic"
-                        initialValues={{ remember: true }}
-                        onFinish={this.onFinish}
-                        onFinishFailed={this.onFinishFailed}
-                        >
-                        <Form.Item name="username"
-                            rules={[{ 
-                                required: true, message: 'Please input your username!' },
-                                {pattern: validate_username, message:"Username is invalid, 3 characters at least." }
-                            ]}>
-                            <Input placeholder="Username" 
-                                prefix={<UserOutlined className="site-form-item-icon" />} 
-                                value={this.state.username}
-                                onChange={(event)=>this.handleChange(event, "username")}
-                            />
-                        </Form.Item>
+            <Fragment>
+                <h1>Online Doctor Appointment Booking System</h1>
+            
+                <div className="loginForm">
+                    <div className="loginContent">
+                        <h4 className="loginText">Login</h4>
+                        <Form
+                            name="basic"
+                            initialValues={{ remember: true }}
+                            onFinish={this.onFinish}
+                            onFinishFailed={this.onFinishFailed}
+                            >
+                            <Form.Item name="username"
+                                rules={[
+                                    {required: true, message: 'Please input your username!' },
+                                    {pattern: validate_username, message:"Username is invalid, 2 characters at least." }
+                                ]}>
+                                <Input placeholder="Username" 
+                                    prefix={<UserOutlined className="site-form-item-icon" />} 
+                                    value={this.state.username}
+                                    onChange={(event)=>this.handleChange(event, "username")}
+                                />
+                            </Form.Item>
 
-                        <Form.Item name="password"
-                            rules={[
-                                {required: true, message: 'Please input your password!' },
-                                {pattern: validate_password, message:"Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.." }
-                            ]}>
-                            <Input.Password  placeholder="Password"
-                                prefix={<LockOutlined className="site-form-item-icon"/>}
-                                type="password"
-                                value={this.state.username}
-                                onChange={(event)=>this.handleChange(event, "password")}
-                            />
-                        </Form.Item>
+                            <Form.Item name="password"
+                                rules={[
+                                    {required: true, message: 'Please input your password!' },
+                                    {pattern: validate_password, message:"Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.." }
+                                ]}>
+                                <Input.Password  placeholder="Password"
+                                    prefix={<LockOutlined className="site-form-item-icon"/>}
+                                    type="password"
+                                    value={this.state.username}
+                                    onChange={(event)=>this.handleChange(event, "password")}
+                                />
+                            </Form.Item>
 
-                        <Form.Item name="remember" valuePropName="checked">
-                            <Checkbox>Remember me</Checkbox>
-                        </Form.Item>
+                            <Form.Item name="remember" valuePropName="checked">
+                                <Checkbox>Remember me</Checkbox>
+                            </Form.Item>
 
-                        <Form.Item>
-                            <Button type="primary" 
-                                loading={loading} 
-                                htmlType="submit" 
-                                className="loginFormButton" block> Login
-                            </Button>
-                        </Form.Item>
-                    </Form>
+                            <Form.Item>
+                                <Button type="primary" 
+                                    loading={loading} 
+                                    htmlType="submit" 
+                                    className="loginFormButton" block> Login
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </div>
                 </div>
-            </div>
+            </Fragment>
         ) 
     }
 }

@@ -44,7 +44,7 @@ class DoctorList extends Component {
             ],
 
             // tabel data
-            data:[{},],
+            data:[],
            
         };
     }

@@ -2,12 +2,26 @@ import React, {Component} from 'react';
 import axios from "axios";
 // ANTD
 import { Form, Input, Button, DatePicker, Upload, message} from 'antd';
-
 import { UserOutlined, UploadOutlined, HeartOutlined, MailOutlined, PhoneOutlined,
-    ProfileOutlined, StarOutlined, ScheduleOutlined} from '@ant-design/icons';
+    ProfileOutlined, StarOutlined, ScheduleOutlined, InboxOutlined } from '@ant-design/icons';
+//VALIDATION
+import { validate_name, validate_phone,validate_date } from "../../utils/validate";
 import 'antd/dist/antd.css'
 // CSS
 import "./index.css";
+
+const { TextArea } = Input;
+const normFile = e => {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e && e.fileList;
+  };
+
+// function handleChangeDate(date, dateString) {
+//     console.log(dateString);
+//   }
 
 class AddDoctor extends Component{
     constructor(){
@@ -32,6 +46,7 @@ class AddDoctor extends Component{
         // and use it to target the key on our `state` object with the same name, using bracket syntax
         this.setState({ [field]: evt.target.value });
     }
+
     
     onFinish = event => {
         // event.preventDefault();
@@ -83,7 +98,7 @@ class AddDoctor extends Component{
             }
 
             if (error.response.status === 501) {
-                message.info("Not implenment, input is empty.");
+                message.info("There are something wrong on the process, please try again.");
             }
         });
         //this.setState({ dfirstname: '', dlastname: '', ddateofbirth: '', demail:'', dcontactnumber:'', dpicurl:'', dintro:'',  dmedicalcenter:'',  dareaofspec:''})
@@ -105,6 +120,8 @@ class AddDoctor extends Component{
         }
         return e && e.filelist;
     };
+
+    
         
     render(){
         const {loading}  = this.state;
@@ -121,7 +138,10 @@ class AddDoctor extends Component{
                         >
                         <Form.Item
                             name="firstName"
-                            rules={[{ required: true, message: 'Please input your first name!' }]}
+                            rules={[
+                                {required: true, message: 'Please input your first name!' },
+                                {pattern: validate_name, message:"Please input a valid firstname, 2 characters at least.."}
+                        ]}
                         >
                             <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="First name" 
                                 onChange={(event)=>this.handleChange(event, "dfirstname")}/>
@@ -129,30 +149,30 @@ class AddDoctor extends Component{
 
                         <Form.Item
                             name="lastName"
-                            rules={[{ required: true, message: 'Please input your last name!' }]}
+                            rules={[
+                                {required: true, message: 'Please input your last name!' },
+                                {pattern: validate_name, message:"Please input a valid lastname, 2 characters at least."}
+                            ]}
                         >
                             <Input prefix={<HeartOutlined  className="site-form-item-icon" />} placeholder="Last name" 
                                 onChange={(event)=>this.handleChange(event, "dlastname")}/>
                         </Form.Item>
 
                         <Form.Item name="date-picker" 
-                            // rules={[{ required: true, message: 'Please input the date of birth!' }]}
+                            rules={[
+                                {required: true, message: 'Please input the date of birth!' },
+                                {pattern: validate_date, message:"Please enter a valid date. format: yyyy-mm-dd.."}
+                            ]}
                             label="Date of Birth" {...this.config} >
                             <Input placeholder="Date of Birth"  onChange={(event)=>this.handleChange(event, "ddateofbirth")}/>
-                            {/* <DatePicker placeholder="Date of Birth"  onChange={(event)=>this.handleChange(event, "ddateofbirth")}/> */}
+                            {/* <DatePicker placeholder="Date of Birth"  value={this.state.value} onChange={this.handleChangeDate}/> */}
                         </Form.Item>
 
                         <Form.Item
                             name="email"
                             rules={[
-                            {
-                                type: 'email',
-                                message: 'The input is not valid E-mail!',
-                            },
-                            {
-                                required: true,
-                                message: 'Please input your E-mail!',
-                            },
+                                {required: true, message: 'Please input your E-mail!'},
+                                {type: 'email', message: 'The input is not valid E-mail!'}
                             ]}
                         >
                             <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email"
@@ -162,25 +182,12 @@ class AddDoctor extends Component{
                         <Form.Item
                             name="phone"
                             rules={[
-                                // {
-                                //     type: 'number',
-                                //     message: 'The input is not valid contact number!',
-                                // },
-                                {   required: true, 
-                                    message: 'Please input the contact number!' 
-                                },
+                                {required: true, message: 'Please input the contact number!'},
+                                {pattern: validate_phone, message:"please input a vaild number, at least 8 numbers."}
                             ]}
                         >
                             <Input prefix={<PhoneOutlined className="site-form-item-icon" />} placeholder="Contact Number"
                                 onChange={(event)=>this.handleChange(event, "dcontactnumber")}/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="intro"
-                            rules={[{ required: true, message: 'Please input some introduction!' }]}
-                        >
-                            <Input prefix={<ProfileOutlined className="site-form-item-icon" />} placeholder="Introduction" 
-                                onChange={(event)=>this.handleChange(event, "dintro")}/>
                         </Form.Item>
 
                         <Form.Item
@@ -200,21 +207,29 @@ class AddDoctor extends Component{
                         </Form.Item>
 
                         <Form.Item
+                            name="intro"
+                            rules={[{ required: true, message: 'Please input some introduction!' }]}
+                        >
+                            <TextArea autosize={{minRows: 12}} prefix={<ProfileOutlined className="site-form-item-icon" />} placeholder="Introduction" 
+                                onChange={(event)=>this.handleChange(event, "dintro")}/>
+                        </Form.Item>
+
+                        {/* <Form.Item
                             name="upload"
                             label="Upload a photo"
                             valuePropName="filelist"
                             getValueFromEvent={this.normFile}
-                            // rules={[{ required: true, message: 'Please upload a photo!' }]}
+                            rules={[{ required: true, message: 'Please upload a photo!' }]}
                         >
-                            <Input  onChange={(event)=>this.handleChange(event, "dpicurl")}></Input>
-                            {/* <Upload name="photo" action="/upload.do" listType="picture" 
-                                onChange={(event)=>this.handleChange(event, "dpicurl")}
+                            <Upload name="photo" action="/upload.do" listType="picture" 
+                               
                             >
                                 <Button icon={<UploadOutlined />} >Click to upload</Button>
-                            </Upload> */}
+                            </Upload>
 
-                        </Form.Item>
+                        </Form.Item> */}
 
+                        <input type="file" id="myFile" name="filename" onChange={(event)=>this.handleChange(event, "dpicurl")}/>
 
                         <Form.Item>
                             <Button type="primary" loading={loading} htmlType="submit" block>

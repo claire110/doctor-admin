@@ -23,7 +23,7 @@ class DoctorList extends Component {
 
             // table header
             columns:[
-                {title:"DoctorID", dataIndex:"doctorID", key:"doctorID", width:100},
+                {title:"DoctorID", dataIndex:"doctorID", key:"doctorIdMenu", width:100},
                 {title:"First Name", dataIndex:"firstName", key:"firstName"},
                 {title:"Last Name", dataIndex:"lastName", key:"lastName"},
                 {title:"Medical Center", dataIndex:"medicalCenter", key:"medicalCenter"},
@@ -42,7 +42,7 @@ class DoctorList extends Component {
             ],
 
             // tabel data
-            data:[{},],   
+            data:[],   
         };
     }
 
@@ -124,13 +124,15 @@ class DoctorList extends Component {
                 {/* security, noopener */}
                 {/* <a className="addDoctor" style={{display: "table-cell"}} 
                    href = "/index/add" target = "_blank" rel = "noopener noreferrer"> */}
+                
                 <a className="addDoctor" style={{display: "table-cell"}} href = "/index/add">
                     <Button className="addDoctorButton" type="primary" htmlType="submit">
                         Add New Doctor
                     </Button>
                 </a>
+            
 
-                <Table rowKey="doctorID" columns={columns} dataSource={data} bordered></Table>
+                <Table rowKey="doctorID" columns={columns} dataSource={data} bordered />
 
             </Fragment>
         )

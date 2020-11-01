@@ -11,7 +11,11 @@ class layoutHeader extends Component {
     render(){
         return(
             <Fragment >
-                <h1 className="logo"><span id="logo">LOGO</span></h1>
+                <h2 className="logo">
+                    <span id="logo"><img src="./logo.png"></img></span>
+                    
+                </h2>
+                
             </Fragment> 
         )
     }

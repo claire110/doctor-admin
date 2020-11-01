@@ -47,7 +47,7 @@ class availableAppt extends Component {
             ],
 
             // tabel data
-            data:[{},],
+            data:[],
            
         };
     }
