@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import axios from "axios";
 // ANTD
-import { Form, Input, Button, message, DatePicker, TimePicker} from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Form, Button, message, DatePicker, TimePicker} from 'antd';
 import 'antd/dist/antd.css'
-//VALIDATION
-import { validate_date, validate_stime,validate_etime } from "../../utils/validate";
 // CSS
 import "./index.css";
+
+const format = 'HH:mm';
 
 class apptPlan extends Component{
     constructor(props){
@@ -21,11 +20,10 @@ class apptPlan extends Component{
         this.handleChange = this.handleChange.bind(this);
     }
 
-    
-    handleChange (evt, field) {
-        // check it out: we get the evt.target.name (which will be either "email" or "password")
-        // and use it to target the key on our `state` object with the same name, using bracket syntax
-        this.setState({ [field]: evt.target.value });
+    handleChange(name, date,value){
+        let state = this.state;
+        state[name] = value;
+        this.setState({state});
     }
 
     onFinish = event => {
@@ -33,7 +31,6 @@ class apptPlan extends Component{
         this.setState({
             loading: true
         })
-
         userObject.append('doctorid', this.props.location.state.doctorid);
         userObject.append('plandate', this.state.plandate);
         userObject.append('starttime', this.state.starttime);
@@ -81,14 +78,6 @@ class apptPlan extends Component{
         console.log('Failed:', errorInfo);
     };
 
-    normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-        return e;
-    }
-    return e && e.filelist;
-    };
-        
     render(){
         const {loading}  = this.state;
         return(
@@ -102,58 +91,48 @@ class apptPlan extends Component{
                         onFinish={this.onFinish}
                         onFinishFailed={this.onFinishFailed}
                         size="large"
+                        className= "apptPlan"
                         >
-                        {/* <Form.Item
-                            name="doctorID"
-                            rules={[{ required: true, message: 'Please input doctor name!' }]}
-                            label="Doctor ID"
-                            onChange={(event)=>this.handleChange(event, "doctorid")} 
-                        >
-                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="First name" 
-                                onChange={(event)=>this.handleChange(event, "doctorid")} />
-                        </Form.Item> */}
 
                         <Form.Item name="date-picker" 
                             rules={[
                                 {required: true, message: 'Please input the appointment date!' },
-                                {pattern: validate_date, message:"Please enter a valid date. format: yyyy-mm-dd.."}
+                                // {pattern: validate_date, message:"Please enter a valid date. format: yyyy-mm-dd.."}
                             ]}
                             label="Appointment date" {...this.config}>
-                            {/* <DatePicker placeholder="Appointment date"
+                            <DatePicker placeholder="Appointment date" style={{width:"100%"}}
+                            value={this.state.plandate} onChange={this.handleChange.bind(this, 'plandate')} />
+                            {/* <Input placeholder="Appointment date"
                             onChange={(event)=>this.handleChange(event, "plandate")} /> */}
-                            <Input placeholder="Appointment date"
-                            onChange={(event)=>this.handleChange(event, "plandate")} />
                         </Form.Item>
+                        
 
                         <Form.Item 
                             // name="time-picker" 
                             name="startTime" 
                             rules={[
                                 {required: true, message: 'Please input start time!' },
-                                {pattern: validate_stime, message:"Please enter a valid time. format: HH:mm"}
+                                // {pattern: validate_stime, message:"Please enter a valid time. format: HH:mm"}
                             ]}
                             label="Start time" {...this.config}>
-                            {/* <TimePicker  placeholder="Start Time"
+                            <TimePicker  style={{width:"100%"}} placeholder="Start Time"
+                                value={this.state.starttime} onChange={this.handleChange.bind(this, 'starttime')} format={format} />
+                                {/* <Input  placeholder="Start Time"
                                 onChange={(event)=>this.handleChange(event, "starttime")} /> */}
-                                <Input  placeholder="Start Time"
-                                onChange={(event)=>this.handleChange(event, "starttime")} 
-                            />
                         </Form.Item>
 
                         <Form.Item 
-                            // name="time-picker" 
                             name="endTime" 
                             rules={[
                                 {required: true, message: 'Please input end time!' },
-                                {pattern: validate_etime, message:"Please enter a valid time. format: HH:mm"}
+                                // {pattern: validate_etime, message:"Please enter a valid time. format: HH:mm"}
                             ]}
                             label="End time" {...this.config}>
-                            {/* <TimePicker  placeholder="End Time"
+                            <TimePicker  placeholder="End Time" style={{width:"100%"}}
+                                value={this.state.endtime} onChange={this.handleChange.bind(this, 'endtime')} format={format} />
+                            {/* <Input  placeholder="End Time"
                                  onChange={(event)=>this.handleChange(event, "endtime")}
                             /> */}
-                            <Input  placeholder="End Time"
-                                 onChange={(event)=>this.handleChange(event, "endtime")}
-                            />
                         </Form.Item>
 
                         <Form.Item>
@@ -164,7 +143,6 @@ class apptPlan extends Component{
                     </Form>
                 </div>
             </div>
-
         ) 
     }
 }

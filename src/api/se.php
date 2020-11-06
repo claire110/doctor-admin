@@ -54,7 +54,7 @@ class doctorSession{
 
     public function domainLock() {
         if((strpos($this->referrer, 'localhost') !== false) ||
-                (strpos($this->referrer, 'doctorbooking') !== false)) {
+                (strpos($this->referrer, 'booking') !== false)) {
             return true;
         } else {
             // throw new APIException("invalid referrer");

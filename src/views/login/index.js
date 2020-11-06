@@ -4,7 +4,7 @@ import{withRouter} from 'react-router-dom';
 import axios from "axios";
 
 // ANTD
-import { Form, Input, Button, Checkbox, message } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css'
 // CSS
@@ -12,6 +12,8 @@ import "./index.css";
 import { validate_password, validate_username } from "../../utils/validate";
 // token
 import { setToken } from '../../utils/session';
+// // encrypt Password
+// import CryptoJs from "crypto-js";
 
 class Login extends Component{
     constructor(){
@@ -33,7 +35,8 @@ class Login extends Component{
     
         userObject.append('username', this.state.username);
         userObject.append('password', this.state.password);
-      
+        //userObject.append('password', CryptoJs.MD5( this.state.password).toString);
+
         axios.post(`http://localhost:80/doctor-admin/src/api/api?action=login`,userObject, {
           withCredentials:true,
           headers: { 
@@ -66,7 +69,7 @@ class Login extends Component{
                 message.info("Password or username is incorrect");
             }
             if (error.response.status === 400) {
-                message.info("please input a valid data");
+                message.info("please input a valid username and password");
             }
             if (error.response.status === 501) {
                 message.info("Input can not be empty");
@@ -92,17 +95,21 @@ class Login extends Component{
         const {loading}  = this.state;
         return(
             <Fragment>
-                <h1>Online Doctor Appointment Booking System</h1>
-            
-                <div className="loginForm">
+                <div className="homeLogo">
+                        <img alt="homeLogo" src="../logo.png"/>
+                </div>  
+                <h1>Book Your Doctor Online</h1>
+               
+                <div className="login">
                     <div className="loginContent">
-                        <h4 className="loginText">Login</h4>
                         <Form
+                            className="loginForm"
                             name="basic"
                             initialValues={{ remember: true }}
                             onFinish={this.onFinish}
                             onFinishFailed={this.onFinishFailed}
                             >
+                            <h3 className="loginText">Login</h3>
                             <Form.Item name="username"
                                 rules={[
                                     {required: true, message: 'Please input your username!' },
@@ -117,20 +124,20 @@ class Login extends Component{
 
                             <Form.Item name="password"
                                 rules={[
-                                    {required: true, message: 'Please input your password!' },
+                                    {required: true, message: 'Please input password!' },
                                     {pattern: validate_password, message:"Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.." }
                                 ]}>
-                                <Input.Password  placeholder="Password"
+                                <Input.Password placeholder="Password"
                                     prefix={<LockOutlined className="site-form-item-icon"/>}
                                     type="password"
-                                    value={this.state.username}
+                                    value={this.state.password}
                                     onChange={(event)=>this.handleChange(event, "password")}
                                 />
                             </Form.Item>
-
+{/* 
                             <Form.Item name="remember" valuePropName="checked">
                                 <Checkbox>Remember me</Checkbox>
-                            </Form.Item>
+                            </Form.Item> */}
 
                             <Form.Item>
                                 <Button type="primary" 

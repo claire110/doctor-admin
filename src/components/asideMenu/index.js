@@ -1,12 +1,11 @@
 import React, { Component, Fragment} from "react";
 import { Link } from "react-router-dom";
 // antd
-import { Collapse, Menu} from 'antd';
+import {Menu} from 'antd';
 // icon
-import { UserOutlined} from '@ant-design/icons';
+import {ClusterOutlined} from '@ant-design/icons';
 // router
 import Router from '../../router/index';
-// import Item from "antd/lib/list/Item";
 
 
 const { SubMenu } = Menu;
@@ -18,17 +17,17 @@ class AsideMenu extends Component {
 }
 
 // Menu
-renderMenu = ({title,key}) => {
+renderMenu = ({title,key,icon}) => {
    return(
-        <Menu.Item key={key} icon={<UserOutlined />}>
+        <Menu.Item key={key} icon={icon}>
             <Link to={key}><span>{title}</span></Link>
         </Menu.Item>
    ) 
 }
 
-// // subMenu
+// subMenu
 renderSubMenu =({title, key, child}) => {
-    return <SubMenu key={key} icon={<UserOutlined />} title={title}>
+    return <SubMenu key={key} icon={<ClusterOutlined />} title={title}>
         {
             child && child.map(Item =>{
                 return Item.child && Item.child.length > 0 ? this.renderSubMenu(Item):this.renderMenu(Item)
@@ -52,13 +51,7 @@ renderSubMenu =({title, key, child}) => {
                          Router && Router.map(firstItem =>{
                             return firstItem.child && firstItem.child.length > 0 ? this.renderSubMenu(firstItem): this.renderMenu(firstItem);
                          })
-                     }
-                    {/* <SubMenu key="sub1" icon={<UserOutlined />} title="Doctor Management">
-                        <Menu.Item key="0">option1</Menu.Item>
-                        <Menu.Item key="1">option2</Menu.Item>
-                    </SubMenu>
-                    <Menu.Item key="2" icon={<UserOutlined />}>Appt plan</Menu.Item> */}
-                   
+                     } 
                 </Menu>
            </Fragment>
         )

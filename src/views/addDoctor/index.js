@@ -1,27 +1,16 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import axios from "axios";
 // ANTD
-import { Form, Input, Button, DatePicker, Upload, message} from 'antd';
-import { UserOutlined, UploadOutlined, HeartOutlined, MailOutlined, PhoneOutlined,
-    ProfileOutlined, StarOutlined, ScheduleOutlined, InboxOutlined } from '@ant-design/icons';
+import { Form, Input, Button, DatePicker, message} from 'antd';
+import { UserOutlined, HeartOutlined, MailOutlined, PhoneOutlined,
+    ProfileOutlined, StarOutlined, ScheduleOutlined } from '@ant-design/icons';
 //VALIDATION
-import { validate_name, validate_phone,validate_date } from "../../utils/validate";
+import { validate_name, validate_phone} from "../../utils/validate";
 import 'antd/dist/antd.css'
 // CSS
 import "./index.css";
 
 const { TextArea } = Input;
-const normFile = e => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e && e.fileList;
-  };
-
-// function handleChangeDate(date, dateString) {
-//     console.log(dateString);
-//   }
 
 class AddDoctor extends Component{
     constructor(){
@@ -39,6 +28,7 @@ class AddDoctor extends Component{
             loading: false
         };
         this.handleChange = this.handleChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     handleChange (evt, field) {
@@ -47,6 +37,17 @@ class AddDoctor extends Component{
         this.setState({ [field]: evt.target.value });
     }
 
+    handleChangeDate(name, date,value){
+        let state = this.state;
+        state[name] = value;
+        this.setState({state});
+    }
+
+    handleInputChange(event) {
+        this.setState({
+            dpicurl: event.target.files[0],
+          })
+    }
     
     onFinish = event => {
         // event.preventDefault();
@@ -62,7 +63,7 @@ class AddDoctor extends Component{
         userObject.append('ddateofbirth', this.state.ddateofbirth);
         userObject.append('demail', this.state.demail);
         userObject.append('dcontactnumber', this.state.dcontactnumber);
-        userObject.append('dpicurl', this.state.dpicurl);
+        userObject.append('file', this.state.dpicurl)
         userObject.append('dintro', this.state.dintro);
         userObject.append('dmedicalcenter', this.state.dmedicalcenter);
         userObject.append('dareaofspec', this.state.dareaofspec);
@@ -109,136 +110,111 @@ class AddDoctor extends Component{
         console.log('Failed:', errorInfo);
     };
 
-    // config = {
-    //     rules: [{ type: 'object', required: true, message: 'Please select time!' }],
-    // };
-
-    normFile = e => {
-        console.log('Upload event:', e);
-        if (Array.isArray(e)) {
-            return e;
-        }
-        return e && e.filelist;
-    };
-
-    
-        
+   
     render(){
         const {loading}  = this.state;
         return(
-            <div className="addDoctorForm">
-                <div className="addDoctorContent">
-                <h2 className="addDoctorText">Doctor Registration</h2>
-                    <Form
-                        name="basic"
-                        initialValues={{ remember: true }}
-                        onFinish={this.onFinish}
-                        onFinishFailed={this.onFinishFailed}
-                        size="large"
-                        >
-                        <Form.Item
-                            name="firstName"
-                            rules={[
-                                {required: true, message: 'Please input your first name!' },
-                                {pattern: validate_name, message:"Please input a valid firstname, 2 characters at least.."}
-                        ]}
-                        >
-                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="First name" 
-                                onChange={(event)=>this.handleChange(event, "dfirstname")}/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="lastName"
-                            rules={[
-                                {required: true, message: 'Please input your last name!' },
-                                {pattern: validate_name, message:"Please input a valid lastname, 2 characters at least."}
-                            ]}
-                        >
-                            <Input prefix={<HeartOutlined  className="site-form-item-icon" />} placeholder="Last name" 
-                                onChange={(event)=>this.handleChange(event, "dlastname")}/>
-                        </Form.Item>
-
-                        <Form.Item name="date-picker" 
-                            rules={[
-                                {required: true, message: 'Please input the date of birth!' },
-                                {pattern: validate_date, message:"Please enter a valid date. format: yyyy-mm-dd.."}
-                            ]}
-                            label="Date of Birth" {...this.config} >
-                            <Input placeholder="Date of Birth"  onChange={(event)=>this.handleChange(event, "ddateofbirth")}/>
-                            {/* <DatePicker placeholder="Date of Birth"  value={this.state.value} onChange={this.handleChangeDate}/> */}
-                        </Form.Item>
-
-                        <Form.Item
-                            name="email"
-                            rules={[
-                                {required: true, message: 'Please input your E-mail!'},
-                                {type: 'email', message: 'The input is not valid E-mail!'}
-                            ]}
-                        >
-                            <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email"
-                                onChange={(event)=>this.handleChange(event, "demail")}/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="phone"
-                            rules={[
-                                {required: true, message: 'Please input the contact number!'},
-                                {pattern: validate_phone, message:"please input a vaild number, at least 8 numbers."}
-                            ]}
-                        >
-                            <Input prefix={<PhoneOutlined className="site-form-item-icon" />} placeholder="Contact Number"
-                                onChange={(event)=>this.handleChange(event, "dcontactnumber")}/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="medicalCenter"
-                            rules={[{ required: true, message: 'Please input medical center name!' }]}
-                        >
-                            <Input prefix={<ScheduleOutlined className="site-form-item-icon" />} placeholder="Medical Center" 
-                                onChange={(event)=>this.handleChange(event, "dmedicalcenter")}/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="areaOfInterst"
-                            rules={[{ required: true, message: 'Please input area of interst!' }]}
-                        >
-                            <Input prefix={<StarOutlined className="site-form-item-icon" />} placeholder="Area Of Interest" 
-                                onChange={(event)=>this.handleChange(event, "dareaofspec")}/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="intro"
-                            rules={[{ required: true, message: 'Please input some introduction!' }]}
-                        >
-                            <TextArea autosize={{minRows: 12}} prefix={<ProfileOutlined className="site-form-item-icon" />} placeholder="Introduction" 
-                                onChange={(event)=>this.handleChange(event, "dintro")}/>
-                        </Form.Item>
-
-                        {/* <Form.Item
-                            name="upload"
-                            label="Upload a photo"
-                            valuePropName="filelist"
-                            getValueFromEvent={this.normFile}
-                            rules={[{ required: true, message: 'Please upload a photo!' }]}
-                        >
-                            <Upload name="photo" action="/upload.do" listType="picture" 
-                               
+            <Fragment>
+                <div className="addDoctorForm">
+                    <div className="addDoctorContent">
+                    <h2 className="addDoctorText">Doctor Registration</h2>
+                        <Form
+                            name="basic"
+                            initialValues={{ remember: true }}
+                            onFinish={this.onFinish}
+                            onFinishFailed={this.onFinishFailed}
+                            size="large"
+                            encType="multipart/form-data"
                             >
-                                <Button icon={<UploadOutlined />} >Click to upload</Button>
-                            </Upload>
+                            <Form.Item
+                                name="firstName"
+                                rules={[
+                                    {required: true, message: 'Please input your first name!' },
+                                    {pattern: validate_name, message:"Please input a valid firstname, 2 letters at least ( only letters can be accepted )."}
+                            ]}
+                            >
+                                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="First name" 
+                                    onChange={(event)=>this.handleChange(event, "dfirstname")}/>
+                            </Form.Item>
 
-                        </Form.Item> */}
+                            <Form.Item
+                                name="lastName"
+                                rules={[
+                                    {required: true, message: 'Please input your last name!' },
+                                    {pattern: validate_name, message:"Please input a valid lastname, 2 letters at least ( only letters can be accepted )."}
+                                ]}
+                            >
+                                <Input prefix={<HeartOutlined  className="site-form-item-icon" />} placeholder="Last name" 
+                                    onChange={(event)=>this.handleChange(event, "dlastname")}/>
+                            </Form.Item>
 
-                        <input type="file" id="myFile" name="filename" onChange={(event)=>this.handleChange(event, "dpicurl")}/>
+                            <Form.Item name="date-picker" 
+                                rules={[{required: true, message: 'Please input the date of birth, format: yyyy-mm-dd.' },]}>
+                                <DatePicker style={{width:"100%"}} name="ddateofbirth" placeholder="Date of Birth"  value={this.state.ddateofbirth} onChange={this.handleChangeDate.bind(this, 'ddateofbirth')} />
+                            </Form.Item>
 
-                        <Form.Item>
-                            <Button type="primary" loading={loading} htmlType="submit" block>
-                            Submit
-                            </Button>
-                        </Form.Item>
-                    </Form>
+                            <Form.Item
+                                name="email"
+                                rules={[
+                                    {required: true, message: 'Please input your E-mail!'},
+                                    {type: 'email', message: 'The input is not valid E-mail!'}
+                                ]}
+                            >
+                                <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email"
+                                    onChange={(event)=>this.handleChange(event, "demail")}/>
+                            </Form.Item>
+
+                            <Form.Item
+                                name="phone"
+                                rules={[
+                                    {required: true, message: 'Please input the contact number!'},
+                                    {pattern: validate_phone, message:"please input a vaild number, at least 8 numbers."}
+                                ]}
+                            >
+                                <Input prefix={<PhoneOutlined className="site-form-item-icon" />} placeholder="Contact Number"
+                                    onChange={(event)=>this.handleChange(event, "dcontactnumber")}/>
+                            </Form.Item>
+
+                            <Form.Item
+                                name="medicalCenter"
+                                rules={[{ required: true, message: 'Please input medical center name!' }]}
+                            >
+                                <Input prefix={<ScheduleOutlined className="site-form-item-icon" />} placeholder="Medical Center" 
+                                    onChange={(event)=>this.handleChange(event, "dmedicalcenter")}/>
+                            </Form.Item>
+
+                            <Form.Item
+                                name="areaOfInterst"
+                                rules={[{ required: true, message: 'Please input area of interst!' }]}
+                            >
+                                <Input prefix={<StarOutlined className="site-form-item-icon" />} placeholder="Area Of Interest" 
+                                    onChange={(event)=>this.handleChange(event, "dareaofspec")}/>
+                            </Form.Item>
+
+                            <Form.Item
+                                name="intro"
+                                rules={[{ required: true, message: 'Please input some introduction!' }]}
+                            >
+                                <TextArea autosize={{minRows: 12}} prefix={<ProfileOutlined className="site-form-item-icon" />} placeholder="Introduction" 
+                                    onChange={(event)=>this.handleChange(event, "dintro")}/>
+                            </Form.Item>
+
+                            <Form.Item
+                                name="pic"
+                                rules={[{ required: true, message: 'Please upload a doctor photo!' }]}
+                                label="Upload A Photo">
+                                <Input className="uploadFile" type="file" id="myFile" name="filename" onChange={this.handleInputChange}/>              
+                            </Form.Item>
+
+                            <Form.Item>
+                                <Button type="primary" loading={loading} htmlType="submit" block>
+                                Submit
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </div>
                 </div>
-            </div>
+            </Fragment>
         ) 
     }
 }

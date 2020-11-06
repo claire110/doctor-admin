@@ -1,8 +1,22 @@
-.delDoctorButton, .planButton{
-    margin-left: 10px;
-}
-
 .addDoctor{
     float: right;
     margin-bottom: 2em;
+}
+
+.delDoctorButton{
+    margin: 0.5em;
+}
+.planButton{
+    margin: 0.5em;
+}
+.editDoctor{
+    margin-left: 0.5em;
+    margin-right: 0.6em;
+}
+
+h2{
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 1em;
+  color: rgb(100, 97, 97);
 }

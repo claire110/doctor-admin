@@ -1,4 +1,4 @@
-const tokenAdmin = "adminToken";
+// const tokenAdmin = "adminToken";
 
 
 export function setToken(value){
@@ -8,8 +8,3 @@ export function setToken(value){
 export function getToken(){
     return sessionStorage.getItem('tokenAdmin');
 }
-
-// save username
-// export function setUsername(value){
-//     cookies.save("username", value);
-// }

@@ -1,8 +1,7 @@
 import React, { Component, Fragment} from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 // antd
-import {Form, Input, Button, Table, message, Modal} from "antd";
+import {Button, Table, message} from "antd";
 // css
 import "./index.css";
 
@@ -24,14 +23,27 @@ class DoctorList extends Component {
 
             // table header
             columns:[
-                {title:"ratingID", dataIndex:"ratingID", key:"ratingID"},
-                {title:"Doctor First Name", dataIndex:"firstName", key:"firstName"},
-                {title:"Doctor Last Name", dataIndex:"lastName", key:"lastName"},
-                {title:"Scale", dataIndex:"scale", key:"scale"},
-                {title:"content", dataIndex:"content", key:"content"},
-                {title:"Rating Time", dataIndex:"ratingTime", key:"ratingTime"},
-                {title:"Appointment Date", dataIndex:"planDate", key:"planDate"},
-                {title:"Start Time", dataIndex:"planTimeStart", key:"planTimeStart"},
+                {title:"ratingID", dataIndex:"ratingID", key:"ratingID", responsive: ['md'],
+                    defaultSortOrder: 'descend',
+                    sorter: (a, b) => a.ratingID - b.ratingID,
+                },
+                {title:"Doctor First Name", dataIndex:"firstName", key:"firstName",
+                    sorter: (a, b) => a.firstName.localeCompare(b.firstName),
+                },
+                {title:"Doctor Last Name", dataIndex:"lastName", key:"lastName", responsive: ['md'],
+                    sorter: (a, b) => a.lastName.localeCompare(b.lastName),
+                },
+                {title:"Scale", dataIndex:"scale", key:"scale", responsive: ['md'],
+                    sorter: (a, b) => a.ratingID - b.ratingID,
+                },
+                {title:"content", dataIndex:"content", key:"content", responsive: ['md']},
+                {title:"Rating Time", dataIndex:"ratingTime", key:"ratingTime", responsive: ['md'],
+                    sorter: (a, b) => new Date(a.ratingTime) - new Date(b.ratingTime),
+                },
+                {title:"Appointment Date", dataIndex:"planDate", key:"planDate", responsive: ['md'],
+                    sorter: (a, b) => new Date(a.planDate) - new Date(b.planDate),
+                },
+                {title:"Start Time", dataIndex:"planTimeStart", key:"planTimeStart", responsive: ['md']},
                 {title:"Management", dataIndex:"management", key:"management", width:125,
                     render:(text, rowData) =>{
                         return(
@@ -56,10 +68,10 @@ class DoctorList extends Component {
 
     // get raing list
     loadData = () => {
-        const allRatings = {
-            pageNumber: this.state.pageNumber,
-            pageSize: this.state.pageSize,
-        }
+        // const allRatings = {
+        //     pageNumber: this.state.pageNumber,
+        //     pageSize: this.state.pageSize,
+        // }
         
         axios.get(`http://localhost:80/doctor-admin/src/api/api?action=allRatings`,
         {withCredentials:true})
@@ -121,7 +133,16 @@ class DoctorList extends Component {
         const { columns, data } = this.state;
         return(
             <Fragment>
-                <Table rowKey="ratingID" columns={columns} dataSource={data} bordered></Table>
+                <h2>Rating List</h2>
+                <Table rowKey="ratingID" columns={columns} dataSource={data} bordered
+                 expandable={{
+                    expandedRowRender: record => <div style={{ margin: 0}}>
+                        <p>Dr Name: {record.firstName}<span> </span>{record.lastName}</p>
+                        <p>Rating Time: {record.ratingTime}</p>
+                        <p>Scale: {record.scale}</p>
+                        <p>Content: {record.content}</p>
+                        </div>,
+                  }}></Table>
             </Fragment>
         )
     }

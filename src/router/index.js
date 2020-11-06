@@ -1,33 +1,30 @@
-
+import React from 'react';
+// icon
+import {FundProjectionScreenOutlined, UsergroupAddOutlined, ScheduleOutlined, UserAddOutlined} from '@ant-design/icons';
 
 const router = [
     {
         title: "Doctor Management",
-        icon: "index",
+        icon:"index",
         key: "/index",
         child:[
-            {key:"/index", title:"Dcotor list", icon: "",},
+            {key:"/index", title:"Dcotor list", icon: <UsergroupAddOutlined />,},
             {
                 key: "/index/add",
                 title: "Add Doctor",
-                icon: ""
+                icon: <UserAddOutlined />
             },
         ]
     },
     {
         title: "Available Times",
-        icon: "bars",
+        icon: <ScheduleOutlined />,
         key: "/index/available"  
     },
     {
         title: "Rating Management",
-        icon: "bars",
+        icon: <FundProjectionScreenOutlined />,
         key: "/index/rating"  
-    },
-    {
-        title: "Logout",
-        icon: "bars",
-        key: "/index/logout"  
     },
     {
         title: "axios",

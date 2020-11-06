@@ -2,7 +2,7 @@ import React, { Component, Fragment} from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 // antd
-import {Form, Input, Button, Table, message, Modal} from "antd";
+import { Button, Table, message} from "antd";
 // css
 import "./index.css";
 
@@ -24,26 +24,37 @@ class availableAppt extends Component {
 
             // table header
             columns:[
-                {title:"PlanID", dataIndex:"planID", key:"planID"},
-                {title:"First Name", dataIndex:"firstName", key:"firstName"},
-                {title:"Last Name", dataIndex:"lastName", key:"lastName"},
-                {title:"Medical Center", dataIndex:"medicalCenter", key:"medicalCenter"},
-                {title:"Date", dataIndex:"planDate", key:"planDate"},
-                {title:"Start Time", dataIndex:"planTimeStart", key:"planTimeStart"},
-                {title:"End Time", dataIndex:"planTimeEnd", key:"planTimeEnd"},
-                {title:"Management", dataIndex:"management", key:"management", width:250,
+                {title:"PlanID", dataIndex:"planID", key:"planID", responsive: ['md'],
+                    defaultSortOrder: 'descend',
+                    sorter: (a, b) => a.planID - b.planID,
+                },
+                {title:"First Name", dataIndex:"firstName", key:"firstName",
+                    sorter: (a, b) => a.firstName.localeCompare(b.firstName),
+                },
+                {title:"Last Name", dataIndex:"lastName", key:"lastName", responsive: ['md'],
+                    sorter: (a, b) => a.lastName.localeCompare(b.lastName),
+                },
+                {title:"Medical Center", dataIndex:"medicalCenter", key:"medicalCenter",width: 130, responsive: ['md'],
+                    sorter: (a, b) => a.medicalCenter.localeCompare(b.medicalCenter),
+                },
+                {title:"Date", dataIndex:"planDate", key:"planDate", responsive: ['md'],
+                    sorter: (a, b) => new Date(a.planDate) - new Date(b.planDate)
+                },
+                {title:"Start Time", dataIndex:"planTimeStart", key:"planTimeStart", responsive: ['md']},
+                {title:"End Time", dataIndex:"planTimeEnd", key:"planTimeEnd",width: 250,  responsive: ['md']},
+                {title:"Management", dataIndex:"management", key:"management", fixed: 'right',
                     render:(text, rowData) =>{
                         return(
-                            <div>
+                            <div className="aviButton">
                                 <Button className="planButton" type="primary">
-                                    <Link to={{pathname: "/index/apptEdit", 
+                                    <Link className="edit" to={{pathname: "/index/apptEdit", 
                                         state:{planid: rowData.planID, doctorid: rowData.doctorID, plandate: rowData.planDate, starttime: rowData.planTimeStart, endtime: rowData.planTimeEnd, firstname: rowData.firstName, lastname: rowData.lastName}}} >Edit</Link>
                                 </Button>
                                 <Button className="delApptButton" onClick={()=>this.delApptPlan(rowData.planID)} >Delete</Button>
                             </div>
                         )
                     } 
-                }   
+                },
             ],
 
             // tabel data
@@ -59,10 +70,10 @@ class availableAppt extends Component {
 
     // get availabel appt list
     loadData = () => {
-        const available = {
-            pageNumber: this.state.pageNumber,
-            pageSize: this.state.pageSize,
-        }
+        // const available = {
+        //     pageNumber: this.state.pageNumber,
+        //     pageSize: this.state.pageSize,
+        // }
         
         axios.get(`http://localhost:80/doctor-admin/src/api/api?action=availableAppt`,
         {withCredentials:true})
@@ -127,6 +138,7 @@ class availableAppt extends Component {
         const { columns, data } = this.state;
         return(
             <Fragment>
+                <h2>Available Times</h2>
                 
                 {/* security, noopener */}
                 {/* <a className="addDoctor" style={{display: "table-cell"}} 
@@ -138,7 +150,15 @@ class availableAppt extends Component {
                     </Button>
                 </a> */}
 
-                <Table rowKey="planID" columns={columns} dataSource={data} bordered></Table>
+                <Table className="availabelApptTable" rowKey="planID" columns={columns} dataSource={data} 
+                 expandable={{
+                    expandedRowRender: record => <div style={{ margin: 0}}>
+                        <p>Dr Name: {record.firstName}<span> </span>{record.lastName}</p>
+                        <p>Date: {record.planDate}</p>
+                        <p>Time: {record.planTimeStart}-{record.planTimeEnd}</p>
+                        </div>,
+                  }}
+                />
 
             </Fragment>
         )

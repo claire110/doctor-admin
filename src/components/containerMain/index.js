@@ -1,12 +1,11 @@
 import React from 'react';
-import {Switch, Route, Link} from 'react-router-dom';
+import {Switch} from 'react-router-dom';
 // component
 import Add from '../../views/addDoctor/index'
 import Plan from '../../views/apptPlan/index'
 import DoctorList from '../../views/doctorList/index'
 import availableAppt from '../../views/availableAppt/index'
 import ratingList from '../../views/ratingList/index'
-import Logout from '../../views/logout/index'
 import test from '../../test/axios'
 // private component
 import PrivateRouter from '../privateRouter/index'
@@ -30,7 +29,6 @@ class ContainerMain extends React.Component{
             <PrivateRouter component ={ApptEdit} exact path="/index/apptedit" />
             <PrivateRouter component ={availableAppt} exact path="/index/available" />
             <PrivateRouter component ={ratingList} exact path="/index/rating" />
-            <PrivateRouter component ={Logout} exact path="/index/logout" />
             <PrivateRouter component ={test} exact path="/index/test" />
           </Switch>
       </div>

@@ -1,13 +1,16 @@
-import React, {cloneElement, Component} from 'react';
+import React, {Component} from 'react';
 import axios from "axios";
 // ANTD
-import { Form, Input, Button, message, DatePicker, TimePicker} from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Form, Input, Button, message} from 'antd';
+import { FieldTimeOutlined, ScheduleOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css'
 //VALIDATION
 import { validate_date, validate_time } from "../../utils/validate";
 // CSS
 import "./index.css";
+
+// const format = 'HH:mm';
+
 
 class apptPlan extends Component{
     constructor(props){
@@ -21,7 +24,6 @@ class apptPlan extends Component{
             plandate: '',
             starttime: '',
             endtime: '',
-            loading: false
         };
         // this.handleChange = this.handleChange.bind(this);
         // this.onFinish = this.onFinish.bind(this);
@@ -85,6 +87,12 @@ class apptPlan extends Component{
         this.setState({ [field]: evt.target.value });
     }
 
+    // handleChangeDate(name, date,value){
+    //     let state = this.state;
+    //     state[name] = value;
+    //     this.setState({state});
+    // }
+    
     onFinish = (event) =>{
     //     alert(111)  
         const userObject = new FormData();
@@ -155,14 +163,14 @@ class apptPlan extends Component{
     render(){
         const {loading}  = this.state;
         return(
-            <div className="apptPlanForm">
+            <div className="editPlanForm">
                 <div className="apptPlanContent">
-                <h2 className="apptPlanText">Appointment Plan</h2>
+                <h2 className="apptPlanText">Edit Plan</h2>
                     <Form ref="form" 
                         initialValues={{doctorID:0, planID:0, planDate: 0, planTimeStart:0, planTimeEnd:0}}
                         layout="vertical"
                         name="basic"
-                        initialValues={{ remember: true }}
+                        // initialValues={{ remember: true }}
                         onFinish={this.onFinish}
                         onFinishFailed={this.onFinishFailed}
                         size="large"
@@ -188,41 +196,27 @@ class apptPlan extends Component{
                             rules={[
                                 {required: true, message: 'Please input the appointment date!' },
                                 {pattern: validate_date, message:"Please enter a valid date. format: yyyy-mm-dd.."}
-                                ]}
-                            {...this.config}>
-                            {/* <DatePicker placeholder="Appointment date"
-                            onChange={(event)=>this.handleChange(event, "plandate")} /> */}
-                            <Input placeholder="Appointment date" 
+                                ]}>
+                            <Input placeholder="Appointment date" prefix={<ScheduleOutlined className="site-form-item-icon" />}
                                 onChange={(event)=>this.handleChange(event, "plandate")} />
                         </Form.Item>
 
                         <Form.Item name="planTimeStart" label="Start time"
-                            // name="time-picker" 
-                            // label="TimePicker" 
                             rules={[
                                 {required: true, message: 'Please input start time!' },
                                 {pattern: validate_time, message:"Please enter a valid time. format: HH:mm"}
-                                ]}
-                            {...this.config}>
-                            {/* <TimePicker  placeholder="Start Time"
-                                onChange={(event)=>this.handleChange(event, "starttime")} /> */}
-                            <Input placeholder="Start Time"  
+                                ]}>
+                            <Input placeholder="Start Time"  prefix={<FieldTimeOutlined className="site-form-item-icon" />}
                                 onChange={(event)=>this.handleChange(event, "starttime")} 
                             />
                         </Form.Item>
 
                         <Form.Item  name="planTimeEnd" label="End time"
-                            // label="TimePicker" 
-                            // name="time-picker" 
                             rules={[
                                 {required: true, message: 'Please input end time!' },
                                 {pattern: validate_time, message:"Please enter a valid time. format: HH:mm"}
-                            ]}
-                            {...this.config}>
-                            {/* <TimePicker  placeholder="End Time"
-                                 onChange={(event)=>this.handleChange(event, "endtime")}
-                            /> */}
-                            <Input  placeholder="End Time"
+                            ]}>
+                            <Input  placeholder="End Time" prefix={<FieldTimeOutlined  className="site-form-item-icon" />}
                                 onChange={(event)=>this.handleChange(event, "endtime")}
                             />
                         </Form.Item>

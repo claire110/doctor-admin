@@ -1,3 +1,32 @@
 .delApptButton{
-    margin-left: 28px;
+    margin: 0.5em;
+}
+.planButton{
+    margin: 0.5em;
+}
+.edit{
+    margin-left: 0.5em;
+    margin-right: 0.6em;
+}
+.aviButton{
+    display: inline-block;
+}
+
+/* .ant-table-row-expand-icon-cell{
+    display: none;
+}
+.ant-table-row-expand-icon{
+    display: none;
+} */
+/* .ant-table-row-expand-icon-collapsed{
+    display: block;
+} */
+
+@media only screen and (min-width: 768px) {
+    .ant-table-row-expand-icon-cell{
+        display: none;
+    }
+    .ant-table-row-expand-icon{
+        display: none;
+    }
 }

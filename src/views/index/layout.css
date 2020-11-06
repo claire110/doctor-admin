@@ -15,7 +15,16 @@
 }
 
 .content{
-    border: 15px solid rgb(226, 223, 223);
+    border: 10px solid rgb(226, 223, 223);
     background-color: rgb(255, 255, 255);
     padding: 30px;
+    
+}
+.footerText{
+    margin-bottom: -0.5em;
+    margin-top: -0.5em;
+}
+
+.footerTime{
+    margin-bottom: -0.5em;
 }

@@ -23,17 +23,35 @@ class DoctorList extends Component {
 
             // table header
             columns:[
-                {title:"DoctorID", dataIndex:"doctorID", key:"doctorIdMenu", width:100},
-                {title:"First Name", dataIndex:"firstName", key:"firstName"},
-                {title:"Last Name", dataIndex:"lastName", key:"lastName"},
-                {title:"Medical Center", dataIndex:"medicalCenter", key:"medicalCenter"},
-                {title:"Management", dataIndex:"management", key:"management", width:200,
+                {title:"DoctorID", dataIndex:"doctorID", key:"doctorIdMenu", width:70, fixed: 'left',responsive: ['md'],
+                    defaultSortOrder: 'descend',
+                    sorter: (a, b) => a.doctorID - b.doctorID,
+                },
+                {title:"First Name", dataIndex:"firstName", key:"firstName",  width: 80, fixed: 'left',
+                    sorter: (a, b) => a.firstName.localeCompare(b.firstName),
+                },
+                {title:"Last Name", dataIndex:"lastName", key:"lastName", width: 80, fixed: 'left',
+                    sorter: (a, b) => a.lastName.localeCompare(b.lastName),
+                },
+                {title:"Medical Center", dataIndex:"medicalCenter", key:"medicalCenter", width: 100,
+                    sorter: (a, b) => a.medicalCenter.localeCompare(b.medicalCenter),
+                },
+                {title:"Date Of Birth", dataIndex:"dateOfBirth", key:"dateOfBirth", width: 100,
+                    sorter: (a, b) => new Date(a.dateOfBirth) - new Date(b.dateOfBirth),
+                },
+                {title:"Email", dataIndex:"email", key:"email", width: 100,
+                    sorter: (a, b) => a.email.localeCompare(b.email),
+                },
+                {title:"Contact Number", dataIndex:"contactNumber", key:"contactNumber", width: 100},
+                {title:"area Of Spec", dataIndex:"areaOfSpec", key:"areaOfSpec", width: 100},
+                {title:"Introduction", dataIndex:"Intro", key:"Intro", width: 200},
+                {title:"Management", dataIndex:"management", key:"management", width:150, fixed: 'right',
                     render:(text, rowData) =>{
                         return(
                             <div>
                                 <Button className="delDoctorButton" onClick={()=>this.delDoctor(rowData.doctorID)} >Delete</Button>
                                 <Button className="planButton" type="primary">
-                                    <Link to={{pathname: "/index/plan", state:{doctorid: rowData.doctorID}}} >Plan</Link>
+                                    <Link className="editDoctor" to={{pathname: "/index/plan", state:{doctorid: rowData.doctorID}}} >Plan</Link>
                                 </Button>
                             </div>
                         )
@@ -53,10 +71,10 @@ class DoctorList extends Component {
 
     // get doctor list
     loadData = () => {
-        const doctors = {
-            pageNumber: this.state.pageNumber,
-            pageSize: this.state.pageSize,
-        }
+        // const doctors = {
+        //     pageNumber: this.state.pageNumber,
+        //     pageSize: this.state.pageSize,
+        // }
         
         axios.get(`http://localhost:80/doctor-admin/src/api/api?action=readDoctorName`,{withCredentials:true})
         // getDoctorList()
@@ -72,7 +90,6 @@ class DoctorList extends Component {
         })
         .catch((error) => {
             console.log(error)
-
             if (error.response.status === 204) {
                 message.info("Sorry, there are not any doctors' information.");
             }
@@ -133,8 +150,8 @@ class DoctorList extends Component {
                     </Button>
                 </a>
             
-
-                <Table rowKey="doctorID" columns={columns} dataSource={data} bordered />
+                <h2>Doctor List</h2>
+                <Table rowKey="doctorID" columns={columns} dataSource={data} scroll={{ x: 1500, y: 600 }}/>
 
             </Fragment>
         )

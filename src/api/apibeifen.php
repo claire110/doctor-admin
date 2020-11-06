@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: PUT, GET, POST");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
 header('Content-Type: application/json');// all echo statements are json_encode
 header("Access-Control-Allow-Headers: content-type");
@@ -596,41 +593,31 @@ $doctordb = new doctorModel; //instantiate database to start using
             
             case 'doctorRegister'://todo, privilege and validation check before insert
                 if($_SESSION['sessionOBJ']->logged_in()) {
-                    if(!empty($_POST['dfirstname']) && !empty($_POST["dlastname"]) && !empty($_POST['ddateofbirth']) && !empty($_POST['demail']) && !empty($_POST['dcontactnumber']) && !empty($_POST['dintro']) && !empty($_POST['dmedicalcenter']) && !empty($_POST['dareaofspec'])){
+                    if(!empty($_POST['dfirstname']) && !empty($_POST["dlastname"]) && !empty($_POST['ddateofbirth']) && !empty($_POST['demail']) && !empty($_POST['dcontactnumber']) && !empty($_POST['dpicurl']) && !empty($_POST['dintro']) && !empty($_POST['dmedicalcenter']) && !empty($_POST['dareaofspec'])){
                         //input sanitation
                         $dfirstname = !empty($_POST['dfirstname'])? testInput(($_POST['dfirstname'])): null;
                         $dlastname = !empty($_POST['dlastname'])? testInput(($_POST['dlastname'])): null;
                         $ddateofbirth = !empty($_POST['ddateofbirth'])? testInput(($_POST['ddateofbirth'])): null;
                         $demail = !empty($_POST['demail'])? testInput(($_POST['demail'])): null;
                         $dcontactnumber = !empty($_POST['dcontactnumber'])? testInput(($_POST['dcontactnumber'])): null;
-                        //$dpicurltest = !empty($_POST['dpicurltest'])? testInput(($_POST['dpicurltest'])): null;  
+                        $dpicurl = !empty($_POST['dpicurl'])? testInput(($_POST['dpicurl'])): null;  
                         $dintro = !empty($_POST['dintro'])? testInput(($_POST['dintro'])): null;
                         $dmedicalcenter = !empty($_POST['dmedicalcenter'])? testInput(($_POST['dmedicalcenter'])): null;
                         $dareaofspec = !empty($_POST['dareaofspec'])? testInput(($_POST['dareaofspec'])): null;
-
+                        
                         //input validation
                         $safe_dfirstname = validate_data($dfirstname, 'firstname');
                         $safe_dlastname = validate_data($dlastname, 'lastname');
                         $safe_ddateofbirth = validate_data($ddateofbirth, 'dateofbirth');
                         $safe_demail = validate_data($demail, 'email');
                         $safe_dcontactnumber = validate_data($dcontactnumber, 'phone');
-                        // $safe_dpicurl = validate_data($dpicurl, 'dpicurl');
+                        //$safe_dpicurl = validate_data($dpicurl, 'dpicurl');
                         $safe_dintro = validate_data($dintro, 'address');
                         $safe_dmedicalcenter = validate_data($dmedicalcenter, 'address');
                         $safe_dareaofspec = validate_data($dareaofspec, 'address');
 
-                        // save img to uploads folder
-                        $folderPath = "uploads/";
-                        $file_tmp = $_FILES['file']['tmp_name'];
-                        $string = $_FILES['file']['name'];
-                        $strings = explode('.',$string);
-                        $file_ext = strtolower(end($strings));
-                        $dpicurl = $folderPath . uniqid() . '.'.$file_ext;
-                        move_uploaded_file($file_tmp, $dpicurl);
-                        echo $dpicurl;
-
                         if($safe_dfirstname == true && $safe_dlastname == true && $safe_ddateofbirth == true && $safe_demail == true && $safe_dcontactnumber == true && $safe_dintro == true && $safe_dmedicalcenter == true && $safe_dareaofspec == true) { 
-                            $result = $doctordb->addDoctor($dfirstname, $dlastname, $ddateofbirth, $demail, $dcontactnumber, $dintro, $dmedicalcenter, $dareaofspec, $dpicurl);
+                            $result = $doctordb->addDoctor($dfirstname, $dlastname, $ddateofbirth, $demail, $dcontactnumber, $dpicurl, $dintro, $dmedicalcenter, $dareaofspec);
                             if($result == true) {
                                 http_response_code(201);//success
                             } else {
@@ -957,15 +944,6 @@ $doctordb = new doctorModel; //instantiate database to start using
                        return false; //insert logging success
                     }
                 break;  
-
-            case 'upload':
-                $folderPath = "uploads/";
-                $file_tmp = $_FILES['file']['tmp_name'];
-                $file_ext = strtolower(end(explode('.',$_FILES['file']['name'])));
-                $file = $folderPath . uniqid() . '.'.$file_ext;
-                move_uploaded_file($file_tmp, $file);
-                return json_encode(['status'=>true]);
-            break;
 
             default:
                 http_response_code(501);//not implement
