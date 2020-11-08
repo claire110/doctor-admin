@@ -119,9 +119,9 @@ class apptPlan extends Component{
                     loading: false
                 })  
                 // fill form
-                this.refs.form.resetFields();
+                // this.refs.form.resetFields();
 
-                message.info("Added Successfully");
+                message.info("Edited Successfully");
                 console.log(res.status);
                 // console.log(res);
                 // console.log(res.data);

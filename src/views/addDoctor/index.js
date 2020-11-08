@@ -49,6 +49,9 @@ class AddDoctor extends Component{
           })
     }
     
+    // clear input
+    formRef = React.createRef();
+
     onFinish = event => {
         // event.preventDefault();
 
@@ -83,6 +86,8 @@ class AddDoctor extends Component{
             // console.log(res.data);
             console.log(res.status);
             message.info("Added Successfully");
+            this.formRef.current.resetFields();   // clear input
+
         })
         .catch((error) => {
             this.setState({
@@ -119,6 +124,7 @@ class AddDoctor extends Component{
                     <div className="addDoctorContent">
                     <h2 className="addDoctorText">Doctor Registration</h2>
                         <Form
+                            ref={this.formRef}   // clear input
                             name="basic"
                             initialValues={{ remember: true }}
                             onFinish={this.onFinish}

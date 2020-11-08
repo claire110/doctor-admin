@@ -5,8 +5,11 @@
     margin: 0.5em;
 }
 .edit{
-    margin-left: 0.5em;
-    margin-right: 0.6em;
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+}
+.editPlan{
+    color: white;
 }
 .aviButton{
     display: inline-block;

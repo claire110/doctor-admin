@@ -94,12 +94,15 @@ class Login extends Component{
     render(){
         const {loading}  = this.state;
         return(
-            <Fragment>
+            <Fragment >
                 <div className="homeLogo">
                         <img alt="homeLogo" src="../logo.png"/>
+                </div>
+                
+                <div className="hompage">
+                    <h1>Book Your Doctor Online</h1>
                 </div>  
-                <h1>Book Your Doctor Online</h1>
-               
+                
                 <div className="login">
                     <div className="loginContent">
                         <Form
@@ -109,6 +112,9 @@ class Login extends Component{
                             onFinish={this.onFinish}
                             onFinishFailed={this.onFinishFailed}
                             >
+                                {/* <div className="loginPic">
+                                    <img alt="homeLogo" src="../1.png"/>
+                                </div> */}
                             <h3 className="loginText">Login</h3>
                             <Form.Item name="username"
                                 rules={[
@@ -134,7 +140,7 @@ class Login extends Component{
                                     onChange={(event)=>this.handleChange(event, "password")}
                                 />
                             </Form.Item>
-{/* 
+                            {/* 
                             <Form.Item name="remember" valuePropName="checked">
                                 <Checkbox>Remember me</Checkbox>
                             </Form.Item> */}

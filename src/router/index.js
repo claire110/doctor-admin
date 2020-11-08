@@ -1,6 +1,6 @@
 import React from 'react';
 // icon
-import {FundProjectionScreenOutlined, UsergroupAddOutlined, ScheduleOutlined, UserAddOutlined} from '@ant-design/icons';
+import {FundProjectionScreenOutlined, UsergroupAddOutlined, ScheduleOutlined, AppstoreAddOutlined } from '@ant-design/icons';
 
 const router = [
     {
@@ -12,7 +12,7 @@ const router = [
             {
                 key: "/index/add",
                 title: "Add Doctor",
-                icon: <UserAddOutlined />
+                icon: <AppstoreAddOutlined  />
             },
         ]
     },

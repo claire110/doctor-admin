@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 // antd
 import { Button, Table, message} from "antd";
+import { DeleteFilled, EditOutlined } from '@ant-design/icons';
 // css
 import "./index.css";
 
@@ -46,11 +47,11 @@ class availableAppt extends Component {
                     render:(text, rowData) =>{
                         return(
                             <div className="aviButton">
-                                <Button className="planButton" type="primary">
+                                <Button className="planButton" type="primary" icon={<EditOutlined  />}>
                                     <Link className="edit" to={{pathname: "/index/apptEdit", 
-                                        state:{planid: rowData.planID, doctorid: rowData.doctorID, plandate: rowData.planDate, starttime: rowData.planTimeStart, endtime: rowData.planTimeEnd, firstname: rowData.firstName, lastname: rowData.lastName}}} >Edit</Link>
+                                        state:{planid: rowData.planID, doctorid: rowData.doctorID, plandate: rowData.planDate, starttime: rowData.planTimeStart, endtime: rowData.planTimeEnd, firstname: rowData.firstName, lastname: rowData.lastName}}} ><span className="editPlan">Edit</span></Link>
                                 </Button>
-                                <Button className="delApptButton" onClick={()=>this.delApptPlan(rowData.planID)} >Delete</Button>
+                                <Button className="delApptButton" icon={<DeleteFilled />} onClick={()=>this.delApptPlan(rowData.planID)} >Delete</Button>
                             </div>
                         )
                     } 

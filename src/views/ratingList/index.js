@@ -2,6 +2,7 @@ import React, { Component, Fragment} from "react";
 import axios from "axios";
 // antd
 import {Button, Table, message} from "antd";
+import { DeleteFilled} from '@ant-design/icons';
 // css
 import "./index.css";
 
@@ -48,7 +49,7 @@ class DoctorList extends Component {
                     render:(text, rowData) =>{
                         return(
                             <div>
-                                <Button className="ratingButton" type="primary" htmlType="submit" onClick={()=>this.delRating(rowData.ratingID)} >Delete</Button>
+                                <Button className="ratingButton" type="primary" icon={<DeleteFilled />} htmlType="submit" onClick={()=>this.delRating(rowData.ratingID)} >Delete</Button>
                             </div>
                         )
                     } 

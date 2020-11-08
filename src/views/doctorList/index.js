@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 // antd
 import {Button, Table, message} from "antd";
+import { UsergroupAddOutlined, DeleteOutlined, SnippetsOutlined } from '@ant-design/icons';
 // css
 import "./index.css";
 // // api
@@ -26,6 +27,8 @@ class DoctorList extends Component {
                 {title:"DoctorID", dataIndex:"doctorID", key:"doctorIdMenu", width:70, fixed: 'left',responsive: ['md'],
                     defaultSortOrder: 'descend',
                     sorter: (a, b) => a.doctorID - b.doctorID,
+                 
+                 
                 },
                 {title:"First Name", dataIndex:"firstName", key:"firstName",  width: 80, fixed: 'left',
                     sorter: (a, b) => a.firstName.localeCompare(b.firstName),
@@ -45,14 +48,14 @@ class DoctorList extends Component {
                 {title:"Contact Number", dataIndex:"contactNumber", key:"contactNumber", width: 100},
                 {title:"area Of Spec", dataIndex:"areaOfSpec", key:"areaOfSpec", width: 100},
                 {title:"Introduction", dataIndex:"Intro", key:"Intro", width: 200},
-                {title:"Management", dataIndex:"management", key:"management", width:150, fixed: 'right',
+                {title:"Management", dataIndex:"management", key:"management", width:180, fixed: 'right',
                     render:(text, rowData) =>{
                         return(
                             <div>
-                                <Button className="delDoctorButton" onClick={()=>this.delDoctor(rowData.doctorID)} >Delete</Button>
-                                <Button className="planButton" type="primary">
-                                    <Link className="editDoctor" to={{pathname: "/index/plan", state:{doctorid: rowData.doctorID}}} >Plan</Link>
+                                <Button className="planButton" type="primary" icon={<SnippetsOutlined />}>
+                                    <Link to={{pathname: "/index/plan", state:{doctorid: rowData.doctorID}}}><span className="plan" >Plan</span></Link>
                                 </Button>
+                                <Button className="delDoctorButton" icon={<DeleteOutlined />} onClick={()=>this.delDoctor(rowData.doctorID)} >Delete</Button>
                             </div>
                         )
                     } 
@@ -145,7 +148,7 @@ class DoctorList extends Component {
                    href = "/index/add" target = "_blank" rel = "noopener noreferrer"> */}
                 
                 <a className="addDoctor" style={{display: "table-cell"}} href = "/index/add">
-                    <Button className="addDoctorButton" type="primary" htmlType="submit">
+                    <Button className="addDoctorButton" type="primary" icon={<UsergroupAddOutlined />} htmlType="submit">
                         Add New Doctor
                     </Button>
                 </a>

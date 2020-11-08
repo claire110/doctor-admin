@@ -48,6 +48,8 @@ class apptPlan extends Component{
             })  
             message.info("Added Successfully");
             console.log(res.status);
+
+            this.formRef.current.resetFields();   // clear input
             // console.log(res);
             // console.log(res.data);
         })
@@ -74,6 +76,9 @@ class apptPlan extends Component{
         console.log('Success:', event);
     };
     
+    // clear input
+    formRef = React.createRef();
+
     onFinishFailed = errorInfo => {
         console.log('Failed:', errorInfo);
     };
@@ -85,6 +90,7 @@ class apptPlan extends Component{
                 <div className="apptPlanContent">
                 <h2 className="apptPlanText">Appointment Plan</h2>
                     <Form
+                        ref={this.formRef}   // clear input
                         layout="vertical"
                         name="basic"
                         initialValues={{ remember: true }}
