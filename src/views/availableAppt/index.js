@@ -76,7 +76,8 @@ class availableAppt extends Component {
         //     pageSize: this.state.pageSize,
         // }
         
-        axios.get(`http://localhost:80/doctor-admin/src/api/api?action=availableAppt`,
+        // axios.get(`http://localhost:80/doctor-admin/src/api/api?action=availableAppt`,
+        axios.get(`http://localhost:80/doctorbooking/api/api?action=availableAppt`,
         {withCredentials:true})
         .then(res => {
             console.log(res.data);
@@ -108,7 +109,8 @@ class availableAppt extends Component {
     delApptPlan(planID){
         console.log(planID)
         if(!planID){return false;}
-        axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=delApptPlan&planid=${planID}`,{withCredentials:true})
+        // axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=delApptPlan&planid=${planID}`,{withCredentials:true})
+        axios.delete(`http://localhost:80/doctorbooking/api/api?action=delApptPlan&planid=${planID}`,{withCredentials:true})
         .then(res => {
             // console.log(res);
             console.log(res.data);

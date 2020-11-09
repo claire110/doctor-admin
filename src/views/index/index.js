@@ -21,7 +21,7 @@ class Index extends Component {
         return(
             <Layout className="layout">
                 
-                <Header className="header" style={{ backgroundColor:'#002766'}}>
+                <Header className="header" style={{ backgroundColor:'#333399'}}>
                     <LayoutHeader/>
                 </Header>
                 <Layout>
@@ -41,7 +41,7 @@ class Index extends Component {
                         </div>
                     </Content>
                 </Layout>
-                <Footer>
+                <Footer >
                     <Row style={{ padding: 0 }}>
                         <Col sm={24} className="footerText" style={{ textAlign: 'center' }}>
                             <p>Doctor Booking ©2020 Created by Claire </p>

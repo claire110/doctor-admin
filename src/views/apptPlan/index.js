@@ -36,7 +36,8 @@ class apptPlan extends Component{
         userObject.append('starttime', this.state.starttime);
         userObject.append('endtime', this.state.endtime);
       
-        axios.post(`http://localhost:80/doctor-admin/src/api/api?action=apptPlan`,userObject, {
+        //axios.post(`http://localhost:80/doctor-admin/src/api/api?action=apptPlan`,userObject, {
+        axios.post(`http://localhost:80/doctorbooking/api/api?action=apptPlan`,userObject, {
             withCredentials:true,
             headers: { 
                 'Content-Type': 'multipart/form-data'

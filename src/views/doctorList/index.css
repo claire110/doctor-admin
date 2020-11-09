@@ -1,3 +1,4 @@
+
 .addDoctor{
     float: right;
     margin-bottom: 2em;
@@ -6,7 +7,13 @@
 .planButton{
    padding-left: 1.5em;
    padding-right: 1.6em;
+   /* background-color: #35AA53;
+   border: whitesmoke; */
 }
+
+/* .planButton :hover{
+    background-color: #40ac5b;
+} */
 
 .plan{
     color: white;

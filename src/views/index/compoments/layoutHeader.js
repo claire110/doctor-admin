@@ -16,7 +16,8 @@ class layoutHeader extends Component {
     }
     handleLogout = event => {
             event.preventDefault();
-            axios.get(`http://localhost:80/doctor-admin/src/api/api?action=logout`,{withCredentials: true})
+            axios.get(`http://localhost:80/doctorbooking/api/api?action=logout`,{withCredentials: true})
+            // axios.get(`http://localhost:80/doctor-admin/src/api/api?action=logout`,{withCredentials: true})
             .then(res => {
                 // console.log(res);
                 // console.log(res.data);

@@ -74,7 +74,8 @@ class DoctorList extends Component {
         //     pageSize: this.state.pageSize,
         // }
         
-        axios.get(`http://localhost:80/doctor-admin/src/api/api?action=allRatings`,
+        // axios.get(`http://localhost:80/doctor-admin/src/api/api?action=allRatings`,
+        axios.get(`http://localhost:80/doctorbooking/api/api?action=allRatings`,
         {withCredentials:true})
         .then(res => {
             console.log(res.data);
@@ -103,7 +104,8 @@ class DoctorList extends Component {
     delRating(ratingID){
         console.log(ratingID)
         if(!ratingID){return false;}
-        axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=adminDelRating&ratingid=${ratingID}`,{withCredentials:true})
+        // axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=adminDelRating&ratingid=${ratingID}`,{withCredentials:true})
+        axios.delete(`http://localhost:80/doctorbooking/api/api?action=adminDelRating&ratingid=${ratingID}`,{withCredentials:true})
         .then(res => {
             // console.log(res);
             console.log(res.data);

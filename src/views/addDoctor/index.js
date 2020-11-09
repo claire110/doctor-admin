@@ -71,7 +71,8 @@ class AddDoctor extends Component{
         userObject.append('dmedicalcenter', this.state.dmedicalcenter);
         userObject.append('dareaofspec', this.state.dareaofspec);
     
-        axios.post(`http://localhost:80/doctor-admin/src/api/api?action=doctorRegister`,
+        // axios.post(`http://localhost:80/doctor-admin/src/api/api?action=doctorRegister`,
+        axios.post(`http://localhost:80/doctorbooking/api/api?action=doctorRegister`,
         userObject, {
             withCredentials:true,
             headers: { 

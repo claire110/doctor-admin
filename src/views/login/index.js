@@ -37,7 +37,8 @@ class Login extends Component{
         userObject.append('password', this.state.password);
         //userObject.append('password', CryptoJs.MD5( this.state.password).toString);
 
-        axios.post(`http://localhost:80/doctor-admin/src/api/api?action=login`,userObject, {
+        // axios.post(`http://localhost:80/doctor-admin/src/api/api?action=login`,userObject, {
+        axios.post(`http://localhost:80/doctorbooking/api/api?action=login`,userObject, {
           withCredentials:true,
           headers: { 
              'Content-Type': 'multipart/form-data'
@@ -115,7 +116,7 @@ class Login extends Component{
                                 {/* <div className="loginPic">
                                     <img alt="homeLogo" src="../1.png"/>
                                 </div> */}
-                            <h3 className="loginText">Login</h3>
+                            {/* <h3 className="loginText">Login</h3> */}
                             <Form.Item name="username"
                                 rules={[
                                     {required: true, message: 'Please input your username!' },

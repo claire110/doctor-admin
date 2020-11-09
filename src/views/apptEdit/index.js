@@ -53,7 +53,8 @@ class apptPlan extends Component{
     getDetailed = () =>{
         // console.log(this.props.location.state)
             //console.log(this.props.location.state.planid)
-            axios.get(`http://localhost:80/doctor-admin/src/api/api?action=apptDetail&planid=${this.props.location.state.planid}`,{withCredentials:true})
+            // axios.get(`http://localhost:80/doctor-admin/src/api/api?action=apptDetail&planid=${this.props.location.state.planid}`,{withCredentials:true})
+            axios.get(`http://localhost:80/doctorbooking/api/api?action=apptDetail&planid=${this.props.location.state.planid}`,{withCredentials:true})
             .then(res => {
                 // console.log(res);
                 // console.log(res.data);
@@ -108,7 +109,8 @@ class apptPlan extends Component{
         userObject.append('starttime', this.state.starttime);
         userObject.append('endtime', this.state.endtime);
       
-        axios.post(`http://localhost:80/doctor-admin/src/api/api?action=apptEdit&planid=${this.state.planid}`,userObject, {
+        // axios.post(`http://localhost:80/doctor-admin/src/api/api?action=apptEdit&planid=${this.state.planid}`,userObject, {
+        axios.post(`http://localhost:80/doctorbooking/api/api?action=apptEdit&planid=${this.state.planid}`,userObject, {
             withCredentials:true,
             headers: { 
                 'Content-Type': 'multipart/form-data'

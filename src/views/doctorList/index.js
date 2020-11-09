@@ -26,9 +26,7 @@ class DoctorList extends Component {
             columns:[
                 {title:"DoctorID", dataIndex:"doctorID", key:"doctorIdMenu", width:70, fixed: 'left',responsive: ['md'],
                     defaultSortOrder: 'descend',
-                    sorter: (a, b) => a.doctorID - b.doctorID,
-                 
-                 
+                    sorter: (a, b) => a.doctorID - b.doctorID,         
                 },
                 {title:"First Name", dataIndex:"firstName", key:"firstName",  width: 80, fixed: 'left',
                     sorter: (a, b) => a.firstName.localeCompare(b.firstName),
@@ -79,7 +77,8 @@ class DoctorList extends Component {
         //     pageSize: this.state.pageSize,
         // }
         
-        axios.get(`http://localhost:80/doctor-admin/src/api/api?action=readDoctorName`,{withCredentials:true})
+        // axios.get(`http://localhost:80/doctor-admin/src/api/api?action=readDoctorName`,{withCredentials:true})
+        axios.get(`http://localhost:80/doctorbooking/api/api?action=readDoctorName`,{withCredentials:true})
         // getDoctorList()
         .then(res => {
             console.log(res.data);
@@ -112,7 +111,8 @@ class DoctorList extends Component {
         }
 
         // deleteDoctor()
-        axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=delDoctor&doctorid=${doctorID}`,{withCredentials:true})
+        // axios.delete(`http://localhost:80/doctor-admin/src/api/api?action=delDoctor&doctorid=${doctorID}`,{withCredentials:true})
+        axios.delete(`http://localhost:80/doctorbooking/api/api?action=delDoctor&doctorid=${doctorID}`,{withCredentials:true})
         .then(res => {
             // console.log(res);
             console.log(res.data);
@@ -141,14 +141,13 @@ class DoctorList extends Component {
     render(){
         const { columns, data } = this.state;
         return(
-            <Fragment>
-                
+            <Fragment>         
                 {/* security, noopener */}
                 {/* <a className="addDoctor" style={{display: "table-cell"}} 
                    href = "/index/add" target = "_blank" rel = "noopener noreferrer"> */}
                 
                 <a className="addDoctor" style={{display: "table-cell"}} href = "/index/add">
-                    <Button className="addDoctorButton" type="primary" icon={<UsergroupAddOutlined />} htmlType="submit">
+                    <Button className="addDoctorButton" type="primary" danger icon={<UsergroupAddOutlined />} htmlType="submit">
                         Add New Doctor
                     </Button>
                 </a>

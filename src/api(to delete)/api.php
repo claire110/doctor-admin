@@ -1,5 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
+// header("Access-Control-Allow-Origin: http://localhost:3000");
 header("Access-Control-Allow-Methods: PUT, GET, POST");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 
@@ -39,7 +40,7 @@ $doctordb = new doctorModel; //instantiate database to start using
         // http_response_code(401);
     }
 
-    // //if session pre-exists, check ratelimit, referrer
+    //if session pre-exists, check ratelimit, referrer
     // if($_SESSION['sessionOBJ']->rateLimit() === false) {
     //     //throw new APIException("Rate limit exceeded");
     //     http_response_code(429);//too many requests
@@ -174,6 +175,9 @@ $doctordb = new doctorModel; //instantiate database to start using
                         $result = $_SESSION['sessionOBJ']->login($username, $password);
                         if($result == 0) {
                             http_response_code(401);//password or username is wrong
+                            // echo json_encode(
+                            //     array('message' => 'password or username is wrong')
+                            // );
                         }  else{
                             echo json_encode($result);
                             //logging
@@ -194,7 +198,11 @@ $doctordb = new doctorModel; //instantiate database to start using
                 } else{
                     http_response_code(501);//Input is empty
                     }
+                    // echo json_encode(
+                    //     array('message' => 'Not implenment, input is empty')
+                    // );
             break;
+
             case 'loggedin':
                 $result = $_SESSION['sessionOBJ']->logged_in();
                 if($result == true){
@@ -204,6 +212,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     http_response_code(401); 
                 } 
             break;
+
             case 'userRegister':
                 if(!empty($_POST['username']) && !empty($_POST["username"]) && !empty($_POST['password']) && !empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['dateofbirth']) && !empty($_POST['email']) && !empty($_POST['contactnumber']) && !empty($_POST['address']) && !empty($_POST['suburb'])&& !empty($_POST['state'])&& !empty($_POST['postcode'])&& !empty($_POST['postcode'])) {
                     //input sanitation
@@ -233,7 +242,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     $safe_postcode = validate_data($postcode, 'address');
 
                     if($safe_username == true && $safe_password == true && $safe_firstname == true && $safe_lastname == true && $safe_dateofbirth == true && $safe_email == true && $safe_contactnumber == true && $safe_address == true && $safe_suburb == true && $safe_state == true && $safe_postcode == true) { 
-                        $result = $doctordb->usernameCheck($username);//username check
+                        $result = $doctordb->usernameCheck($username);//Check if the username is duplicate
                         if($result == 0) {
                             $result = $doctordb->register_process($username, $password, $firstname, $lastname, $dateofbirth, $email, $contactnumber, $address, $suburb, $state, $postcode);
                             if($result == true) {
@@ -242,13 +251,13 @@ $doctordb = new doctorModel; //instantiate database to start using
                                 http_response_code(501);//not implemented 
                             } 
                         } else{
-                            http_response_code(409);//username repeated
+                            http_response_code(409);//username already exists
                         } 
                     } else{
                         http_response_code(400); //Invalid input
                     }
                 } else{
-                    http_response_code(501);
+                    http_response_code(400); // input is empty
                 }
                 break;
 
@@ -263,18 +272,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
                 else{
                     http_response_code(401); // not login
-                } 
-                // logging
-                    $userid = $_SESSION['sessionOBJ']->getuserid();
-                    $ip = $_SESSION['sessionOBJ']->getIP();
-                    $browser = $_SESSION['sessionOBJ']->getBrowser();
-                    $action = $_GET['action'];
-                    $result = $doctordb->logging($userid, $action, $ip, $browser);
-                        if($result == true) {
-                           return true; // insert failed
-                        } else{
-                           return false; //insert logging success
-                        }
+                    } 
                 break;
               
             case 'searchDoctorInfo':
@@ -291,12 +289,14 @@ $doctordb = new doctorModel; //instantiate database to start using
                             echo json_encode($result);//success
                         }
                     }else{
-                        http_response_code(501); //searchValue empty
+                        http_response_code(400); //Search keyword is empty
                     }
                 }else{
-                    http_response_code(501);//searchValue empty
+                    http_response_code(400);//Search keyword is empty
                 }
-            break;         
+            break;
+           
+
             case 'showDoctorinfo':
                 $result = $doctordb->showDoctorinfo();
                 if($result == false) {
@@ -306,6 +306,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     echo json_encode($result);
                 } 
             break;
+
             case 'showRatinginfo':
                 if(!empty($_GET['doctorid'])){
                     $result = $doctordb->showRatinginfo($_GET['doctorid']);
@@ -315,9 +316,10 @@ $doctordb = new doctorModel; //instantiate database to start using
                         echo json_encode($result);//success
                     }
                 }else{
-                    http_response_code(501);//doctorid invalidate
+                    http_response_code(400);//doctorid invalidate
                 }
             break;
+
             case 'showAppinfo':
                 if(!empty($_GET['doctorid'])){
                     $result = $doctordb->showAppinfo($_GET['doctorid']);
@@ -327,9 +329,10 @@ $doctordb = new doctorModel; //instantiate database to start using
                         echo json_encode($result);//success
                     }
                 }else{
-                    http_response_code(501);//doctorid invalidate
+                    http_response_code(400);//doctorid invalidate
                 }
             break;
+
             case 'showAppHistory':
                 if($_SESSION['sessionOBJ']->logged_in()) {
                     if(!empty($_SESSION['sessionOBJ']->getuserid())) {
@@ -345,6 +348,11 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
                 }else{
                     http_response_code(401); ////unauthorized, not login
+                    // throw new APIException("You are not login");
+                    echo json_encode(
+                        array('message' => 'You are not login')
+                    );
+                // break;
                 }
                 // logging
                 $userid = $_SESSION['sessionOBJ']->getuserid();
@@ -436,7 +444,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                             echo json_encode($result);//success
                         }
                     }else{
-                        http_response_code(400);//doctorid invalidate
+                        http_response_code(501);//bookingid invalid
                     }
                 }else {
                     http_response_code(401);//unauthorized
@@ -463,7 +471,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                         echo json_encode($result);//success
                     }
                 }else{
-                    http_response_code(400);//doctorid invalidate
+                    http_response_code(501);//bookingid invalid
                 }
                 break;
 
@@ -496,7 +504,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                                 http_response_code(400); //input invalidate
                             } 
                         }else{
-                                http_response_code(501); //input empty
+                                http_response_code(400); //input empty
                             }  
                 }else{
                     http_response_code(401);//unauthorized
@@ -536,7 +544,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                                 http_response_code(400); //input invalidate
                             }  
                         }else{
-                            http_response_code(501); //input is empty
+                            http_response_code(400); //input is empty
                         }  
 
                     }else{
@@ -593,7 +601,8 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
                 break;
 
-            
+            // ADMIN PANEL
+            //admin: add new doctors
             case 'doctorRegister'://todo, privilege and validation check before insert
                 if($_SESSION['sessionOBJ']->logged_in()) {
                     if(!empty($_POST['dfirstname']) && !empty($_POST["dlastname"]) && !empty($_POST['ddateofbirth']) && !empty($_POST['demail']) && !empty($_POST['dcontactnumber']) && !empty($_POST['dintro']) && !empty($_POST['dmedicalcenter']) && !empty($_POST['dareaofspec'])){
@@ -659,6 +668,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
             break;
 
+            //admin: make plan
             case 'apptPlan':
                 if($_SESSION['sessionOBJ']->logged_in()) {
                     if(!empty($_POST['doctorid']) &&!empty($_POST['plandate']) && !empty($_POST["starttime"]) && !empty($_POST['endtime'])){
@@ -703,8 +713,9 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
             break;
 
+            //admin: show doctors information
             case 'readDoctorName':
-                if($_SESSION['sessionOBJ']->logged_in()) {
+                // if($_SESSION['sessionOBJ']->logged_in()) {
                     $result = $doctordb->readDoctorName();
                     if($result == false) {
                         http_response_code(204); // no content
@@ -712,11 +723,10 @@ $doctordb = new doctorModel; //instantiate database to start using
                         http_response_code(200); //success
                         echo json_encode($result);
                     }
-                }else {
-                    http_response_code(401);//unauthorized
-                }
+                // }else {
+                //     http_response_code(401);//unauthorized
+                // }
  
-
                 //  logging
                 $userid = $_SESSION['sessionOBJ']->getuserid();
                 $ip = $_SESSION['sessionOBJ']->getIP();
@@ -730,6 +740,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
             break;
 
+            //admin: delete doctors
             case 'delDoctor':
                 if($_SESSION['sessionOBJ']->logged_in()) {
                     $method = $_SERVER['REQUEST_METHOD'];
@@ -763,6 +774,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
             break;
     
+            //admin: show available times
             case 'availableAppt':
                 if($_SESSION['sessionOBJ']->logged_in()) {
                     $result = $doctordb->availableAppt_process();
@@ -789,6 +801,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
             break;
 
+            //admin: delete available time
             case 'delApptPlan':
                 if($_SESSION['sessionOBJ']->logged_in()) {
                     $method = $_SERVER['REQUEST_METHOD'];
@@ -822,6 +835,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
             break;
 
+            //admin: show all ratings
             case 'allRatings':
                 if($_SESSION['sessionOBJ']->logged_in()) {
                     $result = $doctordb->allRatings_process();
@@ -848,6 +862,7 @@ $doctordb = new doctorModel; //instantiate database to start using
                     }
             break;
 
+            //admin: delete rating
             case 'adminDelRating':
                 if($_SESSION['sessionOBJ']->logged_in()) {
                     $method = $_SERVER['REQUEST_METHOD'];
@@ -880,7 +895,6 @@ $doctordb = new doctorModel; //instantiate database to start using
                        return false; //insert logging success
                     }
             break;
-
 
             // admin: get appt details
             case 'apptDetail':
